@@ -5,64 +5,65 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>歐盟電池法 — 初步合規診斷 | REnato lab</title>
 <style>
-  :root{--green:#1e5aa8;--green-light:#e9f1fb;--ink:#16202b;--muted:#5b6675;
-    --line:#dbe2ec;--bg:#f5f8fc;--orange:#d97706;--blue:#2563eb;--card:#fff;}
+  :root{--green:#1b2cff;--green-light:#e6ebfa;--ink:#172033;--muted:#566074;--line:#c6d0e2;--bg:#eaeef6;--orange:#b45309;--blue:#1b2cff;--card:#fff;--navy:#10172b;}
   *{box-sizing:border-box}
   body{font-family:"Noto Sans TC",-apple-system,"PingFang TC","Microsoft JhengHei",sans-serif;
-    margin:0;background:var(--bg);color:var(--ink);line-height:1.55}
-  header{background:var(--green);color:#fff;padding:18px 20px}
-  header h1{margin:0;font-size:17px} header p{margin:4px 0 0;font-size:12px;opacity:.9}
+    margin:0;background:var(--bg);color:var(--ink);line-height:1.55;background-image:linear-gradient(#dde4f0 1px,transparent 1px),linear-gradient(90deg,#dde4f0 1px,transparent 1px);background-size:26px 26px}
+  header{background:var(--navy);color:#fff;padding:14px 20px}
+  .hd-row{display:flex;align-items:center;gap:14px;max-width:740px;margin:0 auto}
+  .hd-logo svg{height:26px;width:auto;display:block} .hd-logo svg path{fill:#fff}
+  header h1{margin:0;font-size:16px;font-weight:700;letter-spacing:.02em} header p{margin:3px 0 0;font-size:11.5px;opacity:.82}
   .wrap{max-width:740px;margin:0 auto;padding:18px 18px 60px}
   .progress{display:flex;gap:5px;margin-bottom:6px}
   .pstep{flex:1;text-align:center;font-size:10px;color:var(--muted);cursor:pointer;transition:.12s}
   .pstep:hover{color:var(--green)} .pstep:hover .pbar{background:#9cb9de}
   .phint{font-size:10.5px;color:#b0a98f;text-align:center;margin-bottom:14px}
-  .pbar{height:6px;border-radius:4px;background:var(--line);margin-bottom:5px}
+  .pbar{height:6px;border-radius:0;background:var(--line);margin-bottom:5px}
   .pstep.done .pbar{background:var(--green)} .pstep.done{color:var(--green)}
   .pstep.current .pbar{background:var(--green)} .pstep.current{color:var(--ink);font-weight:700}
   .pstep.skipped .pbar{background:#e8e3d6;background-image:repeating-linear-gradient(45deg,#e8e3d6 0 4px,#f2eee3 4px 8px)}
   .pstep.skipped{color:#b0a98f}
-  .card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:20px 22px;margin-bottom:14px}
-  .stagehd{font-size:12px;color:var(--green);font-weight:700;letter-spacing:.4px;margin-bottom:4px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:0;padding:20px 22px;margin-bottom:14px}
+  .stagehd{font-family:ui-monospace,Menlo,monospace;font-size:10.5px;color:var(--green);font-weight:700;letter-spacing:.14em;text-transform:uppercase;margin-bottom:4px}
   .stagesub{font-size:11.5px;color:var(--muted);margin-bottom:16px}
   .q{padding:14px 0;border-top:1px solid #eef1ee}
   .q:first-of-type{border-top:none;padding-top:4px}
-  .qid{font-size:10px;color:#b7c1bb;font-weight:700;letter-spacing:.5px}
+  .qid{font-family:ui-monospace,Menlo,monospace;font-size:9.5px;color:#8c97ad;font-weight:700;letter-spacing:.06em}
   .q-label{font-weight:600;font-size:14.5px;margin:2px 0 3px}
   .q-hint{color:var(--muted);font-size:11.8px;margin-bottom:9px;display:block}
   .opts{display:flex;flex-wrap:wrap;gap:7px}
-  .opt{border:1px solid var(--line);border-radius:8px;padding:8px 13px;cursor:pointer;
+  .opt{border:1px solid var(--line);border-radius:0;padding:8px 13px;cursor:pointer;
     font-size:13px;background:#fff;transition:.12s;min-height:38px;display:flex;align-items:center}
   .opt:hover{border-color:var(--green)}
   .opt.sel{background:var(--green-light);border-color:var(--green);color:var(--green);font-weight:600}
   .opt.unk{color:var(--muted)} .opt.unk.sel{color:var(--orange);border-color:var(--orange);background:#fdf3e3}
-  .multi-tag{font-size:10px;color:var(--blue);background:#eef4ff;border-radius:8px;padding:1px 7px;margin-left:6px}
-  input[type=text]{width:100%;max-width:380px;padding:9px 12px;border:1px solid var(--line);border-radius:8px;font-size:13px}
+  .multi-tag{font-size:10px;color:var(--blue);background:#eef4ff;border-radius:0;padding:1px 7px;margin-left:6px}
+  input[type=text]{width:100%;max-width:380px;padding:9px 12px;border:1px solid var(--line);border-radius:0;font-size:13px}
   .nav{display:flex;justify-content:space-between;gap:12px;margin-top:6px}
-  .btn{border:none;border-radius:10px;padding:12px 24px;font-size:14.5px;font-weight:600;cursor:pointer}
+  .btn{border:none;border-radius:0;padding:12px 24px;font-size:14.5px;font-weight:600;cursor:pointer}
   .btn-primary{background:var(--green);color:#fff} .btn-primary:disabled{background:#b6c7e0;cursor:not-allowed}
   .btn-ghost{background:#fff;color:var(--muted);border:1px solid var(--line)}
   .end{text-align:center;padding:14px 8px}
   .end .icon{font-size:38px;margin-bottom:6px} .end h2{margin:0 0 6px;font-size:18px}
   .end p{color:var(--muted);max-width:460px;margin:0 auto 14px;font-size:13px}
   .count{display:inline-block;background:var(--green-light);color:var(--green);font-weight:700;
-    border-radius:20px;padding:4px 14px;margin-bottom:14px;font-size:13px}
+    border-radius:0;padding:4px 14px;margin-bottom:14px;font-size:13px}
   .note{font-size:11px;color:#b0a98f;margin-top:12px;text-align:center}
   .zone{margin-bottom:16px}
-  .zone-h{font-size:13px;font-weight:700;padding:6px 12px;border-radius:8px;margin-bottom:8px}
+  .zone-h{font-size:13px;font-weight:700;padding:6px 12px;border-radius:0;margin-bottom:8px}
   .zone-h.zc{background:var(--green-light);color:var(--green)}
   .zone-h.zn{background:#fdf3e3;color:#8a5a00}
   .zone-h.zx{background:#eef0ee;color:#7a857f}
-  .lt{border:1px solid var(--line);border-left:4px solid var(--line);border-radius:9px;padding:12px 14px;margin-bottom:9px;background:#fff;text-align:left}
+  .lt{border:1px solid var(--line);border-left:4px solid var(--line);border-radius:0;padding:12px 14px;margin-bottom:9px;background:#fff;text-align:left}
   .lt.confirmed{border-left-color:var(--green)} .lt.needs{border-left-color:var(--orange)} .lt.cannot{border-left-color:#b7c1bb;opacity:.85}
   .lt-h{font-size:14px} .lt-h b{color:var(--green)} .lt.cannot .lt-h b{color:#7a857f}
   .lt-art{font-size:11px;color:var(--muted);margin:2px 0 6px}
   .lt-desc{font-size:13px} .lt-resp{font-size:12px;color:var(--muted);margin-top:5px}
-  .why2{font-size:11.5px;color:var(--green);background:var(--green-light);padding:5px 9px;border-radius:6px;margin-top:7px}
-  .note2{font-size:11.5px;color:#8a5a00;background:#fdf3e3;padding:5px 9px;border-radius:6px;margin-top:7px}
+  .why2{font-size:11.5px;color:var(--green);background:var(--green-light);padding:5px 9px;border-radius:0;margin-top:7px}
+  .note2{font-size:11.5px;color:#8a5a00;background:#fdf3e3;padding:5px 9px;border-radius:0;margin-top:7px}
   .lt-trig{font-size:10.5px;color:#b0a98f;margin-top:6px}
   .email-h{font-weight:600;margin-bottom:8px}
-  #emailbox{width:100%;max-width:320px;padding:9px 12px;border:1px solid var(--line);border-radius:8px;font-size:13px;margin-bottom:8px}
+  #emailbox{width:100%;max-width:320px;padding:9px 12px;border:1px solid var(--line);border-radius:0;font-size:13px;margin-bottom:8px}
   .consent{display:flex;gap:7px;align-items:center;font-size:12.5px;margin-bottom:8px;cursor:pointer}
   .privacy2{font-size:11px;color:var(--muted);line-height:1.6;margin-bottom:10px}
   .emaildone{color:var(--green);font-size:13px;font-weight:600}
@@ -72,7 +73,7 @@
   .lhero h1{font-size:22px;margin:8px 0 6px}
   .lsub{color:var(--muted);font-size:14px;max-width:460px;margin:0 auto 18px;line-height:1.6}
   .lbtn{padding:14px 34px;font-size:16px}
-  .lcard{background:#fff;border:1px solid var(--line);border-radius:12px;padding:18px 20px;margin-bottom:14px}
+  .lcard{background:#fff;border:1px solid var(--line);border-radius:0;padding:18px 20px;margin-bottom:14px}
   .lcard p{margin:0 0 12px;font-size:13.5px;color:var(--ink);line-height:1.7}
   .lcard p:last-child{margin-bottom:0}
   .lcard .lk{color:var(--green);font-weight:700}
@@ -80,10 +81,27 @@
 </style>
 </head>
 <body>
-<header>
-  <h1>歐盟電池法 — 初步合規診斷</h1>
-  <p>ICT／電子產品 · 6 階段 · 約 6–10 分鐘完成（依作答自動跳題）</p>
-</header>
+<header><div class="hd-row">
+  <span class="hd-logo"><svg width="148" height="49" viewBox="0 0 148 49" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M40.9 9.71001H69.15C69.64 9.71001 70.03 9.33001 70.03 8.85001V0.860001C70.03 0.390001 69.63 0 69.15 0H40.9C40.41 0 40.02 0.380001 40.02 0.860001V8.85001C40.02 9.32001 40.42 9.71001 40.9 9.71001Z" fill="#0055FF"/>
+<path d="M69.14 19.41H40.89C40.4 19.41 40.01 19.79 40.01 20.27V28.26C40.01 28.73 40.41 29.12 40.89 29.12H69.14C69.63 29.12 70.02 28.74 70.02 28.26V20.27C70.02 19.8 69.62 19.41 69.14 19.41Z" fill="#0055FF"/>
+<path d="M69.14 38.82H40.89C40.4 38.82 40.01 39.2 40.01 39.68V47.67C40.01 48.14 40.41 48.53 40.89 48.53H69.14C69.63 48.53 70.02 48.15 70.02 47.67V39.68C70.02 39.21 69.62 38.82 69.14 38.82Z" fill="#0055FF"/>
+<path d="M29.13 38.82H20.9C20.41 38.82 20.02 39.2 20.02 39.68V47.67C20.02 48.14 20.42 48.53 20.9 48.53H29.13C29.62 48.53 30.01 48.15 30.01 47.67V39.68C30.01 39.21 29.62 38.82 29.13 38.82Z" fill="#0055FF"/>
+<path d="M29.13 0.0100098H0.88C0.39 0.0100098 0 0.39001 0 0.87001V8.86001C0 9.33001 0.4 9.72001 0.88 9.72001H19.12C19.61 9.72001 20 10.1 20 10.58V28.27C20 28.74 20.4 29.13 20.88 29.13H29.12C29.61 29.13 30 28.75 30 28.27V0.87001C30 0.40001 29.6 0.0100098 29.12 0.0100098H29.13Z" fill="#0055FF"/>
+<path d="M19.12 29.12H0.88C0.39 29.12 0 29.5 0 29.98V37.97C0 38.44 0.4 38.83 0.88 38.83H19.12C19.61 38.83 20 38.45 20 37.97V29.98C20 29.51 19.6 29.12 19.12 29.12Z" fill="#0055FF"/>
+<path d="M82.87 38.32H80.82V48.34H82.87V38.32Z" fill="#0055FF"/>
+<path d="M94.39 46.73V42.95C94.39 42.51 94.29 42.16 94.09 41.89C93.89 41.62 93.63 41.41 93.31 41.27C92.99 41.12 92.64 41.02 92.25 40.97C91.86 40.92 91.48 40.89 91.11 40.89C90.69 40.89 90.28 40.93 89.87 41.01C89.46 41.09 89.09 41.22 88.76 41.41C88.43 41.6 88.16 41.85 87.95 42.15C87.74 42.46 87.62 42.85 87.59 43.31H89.65C89.69 42.92 89.82 42.64 90.06 42.47C90.29 42.3 90.61 42.22 91.01 42.22C91.19 42.22 91.36 42.23 91.52 42.26C91.68 42.28 91.82 42.33 91.94 42.4C92.06 42.47 92.16 42.57 92.23 42.7C92.3 42.83 92.34 43 92.34 43.21C92.34 43.42 92.29 43.57 92.15 43.68C92.01 43.79 91.83 43.87 91.6 43.92C91.37 43.98 91.1 44.02 90.8 44.05C90.5 44.08 90.2 44.12 89.89 44.16C89.58 44.21 89.27 44.27 88.97 44.35C88.67 44.43 88.4 44.55 88.16 44.71C87.92 44.87 87.73 45.08 87.58 45.35C87.43 45.62 87.36 45.96 87.36 46.37C87.36 46.74 87.43 47.07 87.56 47.34C87.69 47.61 87.87 47.83 88.1 48.01C88.33 48.19 88.6 48.32 88.91 48.4C89.22 48.48 89.55 48.53 89.91 48.53C90.37 48.53 90.83 48.47 91.27 48.34C91.72 48.21 92.1 47.98 92.43 47.65C92.44 47.77 92.46 47.89 92.48 48.01C92.5 48.13 92.53 48.24 92.57 48.35H94.65C94.55 48.2 94.49 47.98 94.45 47.68C94.41 47.38 94.39 47.07 94.39 46.74V46.73ZM92.34 45.54C92.34 45.65 92.33 45.8 92.3 45.99C92.28 46.18 92.21 46.36 92.11 46.55C92 46.73 91.84 46.89 91.62 47.02C91.4 47.15 91.09 47.22 90.68 47.22C90.51 47.22 90.36 47.21 90.2 47.18C90.05 47.15 89.91 47.1 89.8 47.03C89.68 46.96 89.59 46.86 89.53 46.74C89.46 46.62 89.43 46.47 89.43 46.29C89.43 46.11 89.46 45.95 89.53 45.83C89.6 45.71 89.69 45.61 89.8 45.53C89.91 45.45 90.04 45.39 90.19 45.34C90.34 45.29 90.49 45.26 90.64 45.23C90.81 45.2 90.97 45.18 91.13 45.16C91.29 45.14 91.45 45.12 91.6 45.09C91.75 45.06 91.89 45.03 92.02 44.98C92.15 44.94 92.26 44.88 92.35 44.8V45.54H92.34Z" fill="#0055FF"/>
+<path d="M104.71 41.81C104.42 41.5 104.09 41.27 103.72 41.12C103.35 40.97 102.98 40.9 102.61 40.9C102.15 40.9 101.7 40.99 101.27 41.16C100.84 41.33 100.5 41.61 100.25 41.98H100.22V38.33H98.17V48.35H100.12V47.42H100.15C100.37 47.82 100.7 48.11 101.13 48.28C101.57 48.45 102.06 48.53 102.61 48.53C102.99 48.53 103.36 48.46 103.72 48.31C104.09 48.16 104.42 47.93 104.71 47.62C105 47.31 105.24 46.92 105.43 46.44C105.61 45.96 105.7 45.38 105.7 44.72C105.7 44.06 105.61 43.48 105.43 43C105.25 42.52 105.01 42.12 104.71 41.82V41.81ZM103.54 45.6C103.47 45.88 103.37 46.13 103.22 46.34C103.08 46.56 102.89 46.73 102.68 46.85C102.47 46.97 102.2 47.04 101.89 47.04C101.58 47.04 101.33 46.98 101.11 46.85C100.89 46.72 100.7 46.55 100.56 46.34C100.42 46.12 100.31 45.88 100.24 45.6C100.17 45.32 100.14 45.03 100.14 44.73C100.14 44.43 100.17 44.13 100.24 43.85C100.31 43.57 100.42 43.32 100.56 43.11C100.7 42.89 100.89 42.72 101.11 42.6C101.33 42.47 101.59 42.41 101.89 42.41C102.19 42.41 102.46 42.47 102.68 42.6C102.9 42.73 103.08 42.9 103.22 43.11C103.36 43.32 103.47 43.57 103.54 43.85C103.61 44.13 103.64 44.42 103.64 44.73C103.64 45.04 103.61 45.32 103.54 45.6Z" fill="#0055FF"/>
+<path d="M88.93 28.73C88.88 28.54 88.85 28.34 88.82 28.13C88.8 27.92 88.78 27.71 88.77 27.51C88.77 27.31 88.75 27.13 88.74 26.98C88.72 26.74 88.69 26.51 88.64 26.27C88.59 26.03 88.51 25.82 88.4 25.62C88.29 25.42 88.15 25.25 87.98 25.11C87.81 24.96 87.59 24.86 87.33 24.79V24.76C87.87 24.55 88.26 24.24 88.5 23.84C88.74 23.44 88.86 22.96 88.86 22.41C88.86 22.05 88.79 21.72 88.66 21.41C88.53 21.1 88.34 20.82 88.09 20.59C87.84 20.35 87.54 20.17 87.2 20.03C86.85 19.89 86.46 19.83 86.03 19.83H80.81V29.21H82.94V25.54H85.07C85.6 25.54 85.99 25.65 86.22 25.88C86.45 26.11 86.61 26.47 86.68 26.96C86.73 27.34 86.77 27.73 86.8 28.14C86.83 28.55 86.9 28.91 87.02 29.21H89.15C89.05 29.08 88.98 28.92 88.92 28.73H88.93ZM86.38 23.76C86.14 23.97 85.77 24.07 85.28 24.07H82.95V21.43H85.28C85.77 21.43 86.13 21.53 86.38 21.74C86.62 21.95 86.74 22.28 86.74 22.73C86.74 23.18 86.62 23.55 86.38 23.76Z" fill="#0055FF"/>
+<path d="M101.02 27.48H95.8V25.18H100.49V23.58H95.8V21.57H100.91V19.83H93.68V29.21H101.02V27.48Z" fill="#0055FF"/>
+<path d="M112.94 21.98C112.72 21.7 112.42 21.48 112.03 21.32C111.65 21.16 111.15 21.08 110.55 21.08C110.08 21.08 109.61 21.18 109.16 21.39C108.71 21.6 108.34 21.93 108.06 22.39H108.01V21.29H105.88V29.2H108.12V25.05C108.12 24.24 108.26 23.67 108.53 23.31C108.8 22.96 109.25 22.78 109.86 22.78C110.4 22.78 110.77 22.94 110.98 23.26C111.19 23.58 111.3 24.07 111.3 24.72V29.19H113.54V24.32C113.54 23.83 113.5 23.38 113.41 22.98C113.32 22.58 113.17 22.23 112.94 21.95V21.98Z" fill="#0055FF"/>
+<path d="M125.72 27.45V23.33C125.72 22.85 125.61 22.47 125.39 22.17C125.17 21.88 124.88 21.65 124.54 21.49C124.19 21.33 123.81 21.22 123.39 21.16C122.97 21.1 122.55 21.08 122.14 21.08C121.69 21.08 121.24 21.12 120.79 21.21C120.34 21.3 119.94 21.44 119.58 21.65C119.22 21.85 118.93 22.12 118.7 22.46C118.47 22.8 118.34 23.22 118.3 23.73H120.54C120.58 23.3 120.73 22.99 120.98 22.81C121.23 22.63 121.58 22.53 122.02 22.53C122.22 22.53 122.41 22.54 122.58 22.57C122.75 22.6 122.91 22.65 123.04 22.72C123.17 22.8 123.28 22.9 123.36 23.04C123.44 23.18 123.48 23.37 123.48 23.6C123.49 23.82 123.42 24 123.28 24.11C123.13 24.23 122.93 24.32 122.68 24.38C122.43 24.44 122.14 24.49 121.81 24.52C121.48 24.55 121.15 24.59 120.82 24.64C120.48 24.69 120.15 24.76 119.82 24.85C119.49 24.94 119.19 25.07 118.94 25.24C118.68 25.41 118.47 25.65 118.31 25.94C118.15 26.23 118.07 26.6 118.07 27.05C118.07 27.46 118.14 27.81 118.28 28.11C118.42 28.4 118.62 28.65 118.87 28.84C119.12 29.03 119.42 29.18 119.75 29.27C120.09 29.36 120.45 29.41 120.84 29.41C121.35 29.41 121.84 29.34 122.32 29.19C122.81 29.05 123.23 28.8 123.58 28.44C123.58 28.57 123.61 28.7 123.63 28.83C123.66 28.96 123.69 29.08 123.73 29.2H126C125.9 29.04 125.82 28.79 125.78 28.47C125.74 28.14 125.72 27.8 125.72 27.44V27.45ZM123.48 26.15C123.48 26.27 123.47 26.44 123.44 26.64C123.41 26.84 123.34 27.05 123.23 27.24C123.12 27.44 122.94 27.61 122.69 27.75C122.45 27.89 122.11 27.97 121.66 27.97C121.48 27.97 121.31 27.95 121.14 27.92C120.97 27.89 120.82 27.84 120.7 27.76C120.57 27.68 120.47 27.58 120.4 27.45C120.33 27.32 120.29 27.15 120.29 26.96C120.29 26.77 120.33 26.59 120.4 26.45C120.47 26.32 120.57 26.21 120.69 26.12C120.81 26.03 120.95 25.96 121.12 25.91C121.28 25.86 121.45 25.82 121.62 25.79C121.8 25.76 121.98 25.73 122.16 25.72C122.34 25.7 122.51 25.67 122.67 25.64C122.83 25.61 122.99 25.57 123.13 25.52C123.27 25.48 123.39 25.41 123.48 25.33V26.14V26.15Z" fill="#0055FF"/>
+<path d="M133.45 18.93H131.21V21.3H129.85V22.75H131.21V27.42C131.21 27.82 131.28 28.14 131.42 28.38C131.56 28.62 131.74 28.81 131.98 28.95C132.22 29.08 132.49 29.17 132.8 29.22C133.11 29.27 133.44 29.29 133.78 29.29C134 29.29 134.23 29.29 134.46 29.28C134.69 29.27 134.9 29.25 135.09 29.22V27.54C134.98 27.56 134.87 27.58 134.76 27.59C134.65 27.6 134.52 27.6 134.4 27.6C134.02 27.6 133.77 27.54 133.64 27.42C133.51 27.3 133.45 27.05 133.45 26.69V22.77H135.09V21.32H133.45V18.95V18.93Z" fill="#0055FF"/>
+<path d="M147.21 23.54C147.01 23.02 146.73 22.58 146.36 22.22C145.99 21.86 145.55 21.58 145.03 21.38C144.51 21.18 143.93 21.08 143.29 21.08C142.65 21.08 142.07 21.18 141.55 21.38C141.03 21.58 140.59 21.86 140.22 22.22C139.85 22.58 139.57 23.02 139.37 23.54C139.17 24.05 139.07 24.63 139.07 25.26C139.07 25.89 139.17 26.46 139.37 26.98C139.57 27.49 139.85 27.92 140.22 28.29C140.59 28.65 141.03 28.93 141.55 29.13C142.06 29.32 142.64 29.42 143.29 29.42C143.94 29.42 144.51 29.32 145.03 29.13C145.55 28.94 145.99 28.66 146.36 28.29C146.73 27.93 147.01 27.49 147.21 26.98C147.41 26.47 147.51 25.9 147.51 25.26C147.51 24.62 147.41 24.05 147.21 23.54ZM145.17 26.19C145.11 26.49 145 26.76 144.85 27C144.7 27.24 144.49 27.43 144.23 27.57C143.97 27.71 143.65 27.78 143.28 27.78C142.91 27.78 142.59 27.71 142.33 27.57C142.08 27.43 141.87 27.24 141.72 27C141.57 26.76 141.46 26.49 141.4 26.19C141.34 25.89 141.31 25.58 141.31 25.26C141.31 24.94 141.34 24.63 141.4 24.33C141.46 24.02 141.57 23.75 141.72 23.52C141.87 23.29 142.08 23.09 142.33 22.95C142.58 22.8 142.9 22.73 143.28 22.73C143.66 22.73 143.98 22.8 144.23 22.95C144.49 23.1 144.69 23.29 144.85 23.52C145 23.75 145.11 24.02 145.17 24.33C145.23 24.64 145.27 24.95 145.27 25.26C145.27 25.57 145.24 25.88 145.17 26.19Z" fill="#0055FF"/>
+</svg></span>
+  <div><h1>歐盟電池法 — 初步合規診斷</h1>
+  <p>ICT／電子產品 · 6 階段 · 約 6–10 分鐘完成</p></div>
+</div></header>
 <div class="wrap">
   <div id="app"></div>
   <div class="note">本工具提供初步自評，不構成法律意見；實際義務以最新法規與授權法規為準。© REnato lab</div>
@@ -302,7 +320,7 @@ function landingHTML(){
   '<div class="lhero"><div class="licon">🔋</div>'+
   '<h1>歐盟電池法 — 初步合規診斷</h1>'+
   '<p class="lsub">約 6–10 分鐘，初步判斷你的產品是否受 EU 2023/1542 規範、涉及哪些義務（Legal Theme）。</p>'+
-  '<button class="btn btn-primary lbtn" onclick="startTool()">開始診斷 →</button></div>'+
+  '</div>'+
   '<div class="lcard">'+
    '<p>企業要判斷自己是否受歐盟電池法規範、涉及哪些義務，通常需要顧問逐條解讀，門檻高、耗時。本工具用<span class="lk">分階段問答</span>，依決策樹自動判斷適用的 Legal Theme，產出初步風險畫像，作為後續諮詢的起點。</p>'+
    '<p><span class="lk">適合誰用：</span>ICT／電子產品企業（筆電、手機、網通設備、IoT 裝置，以及電芯／模組／零組件供應商）。回答約 10–20 題（依產品自動跳題），系統把答案轉成法規 trigger、比對各 Legal Theme 的啟動條件，輸出「確定適用 / 建議補充資料 / 無法判斷」三類結果。</p>'+
