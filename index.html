@@ -78,6 +78,12 @@
   .lcard p:last-child{margin-bottom:0}
   .lcard .lk{color:var(--green);font-weight:700}
   .ldisc{color:var(--muted);font-size:12px;border-top:1px solid var(--line);padding-top:12px;margin-top:4px!important}
+  .rpills{display:flex;gap:8px;flex-wrap:wrap;margin:2px 0 12px}
+  .rp{font-size:11.5px;font-weight:700;padding:4px 10px;border:1px solid}
+  .rp1{color:var(--green);border-color:var(--green);background:var(--green-light)}
+  .rp2{color:#8a5a00;border-color:#e7c890;background:#fdf3e3}
+  .rp3{color:#7a857f;border-color:#cdd4cf;background:#eef0ee}
+  .ltrust{font-size:11.5px;color:#33507e;background:#eef2fb;padding:8px 11px;border-left:3px solid var(--green);margin:0 0 12px;line-height:1.6}
 </style>
 </head>
 <body>
@@ -100,7 +106,7 @@
 <path d="M147.21 23.54C147.01 23.02 146.73 22.58 146.36 22.22C145.99 21.86 145.55 21.58 145.03 21.38C144.51 21.18 143.93 21.08 143.29 21.08C142.65 21.08 142.07 21.18 141.55 21.38C141.03 21.58 140.59 21.86 140.22 22.22C139.85 22.58 139.57 23.02 139.37 23.54C139.17 24.05 139.07 24.63 139.07 25.26C139.07 25.89 139.17 26.46 139.37 26.98C139.57 27.49 139.85 27.92 140.22 28.29C140.59 28.65 141.03 28.93 141.55 29.13C142.06 29.32 142.64 29.42 143.29 29.42C143.94 29.42 144.51 29.32 145.03 29.13C145.55 28.94 145.99 28.66 146.36 28.29C146.73 27.93 147.01 27.49 147.21 26.98C147.41 26.47 147.51 25.9 147.51 25.26C147.51 24.62 147.41 24.05 147.21 23.54ZM145.17 26.19C145.11 26.49 145 26.76 144.85 27C144.7 27.24 144.49 27.43 144.23 27.57C143.97 27.71 143.65 27.78 143.28 27.78C142.91 27.78 142.59 27.71 142.33 27.57C142.08 27.43 141.87 27.24 141.72 27C141.57 26.76 141.46 26.49 141.4 26.19C141.34 25.89 141.31 25.58 141.31 25.26C141.31 24.94 141.34 24.63 141.4 24.33C141.46 24.02 141.57 23.75 141.72 23.52C141.87 23.29 142.08 23.09 142.33 22.95C142.58 22.8 142.9 22.73 143.28 22.73C143.66 22.73 143.98 22.8 144.23 22.95C144.49 23.1 144.69 23.29 144.85 23.52C145 23.75 145.11 24.02 145.17 24.33C145.23 24.64 145.27 24.95 145.27 25.26C145.27 25.57 145.24 25.88 145.17 26.19Z" fill="#0055FF"/>
 </svg></span>
   <div><h1>歐盟電池法 — 初步合規診斷</h1>
-  <p>ICT／電子產品 · 6 階段 · 約 6–10 分鐘完成</p></div>
+  <p>6 階段 · 約 10 分鐘完成 · 依作答自動跳題</p></div>
 </div></header>
 <div class="wrap">
   <div id="app"></div>
@@ -125,91 +131,46 @@ const STAGES=[
 /* ====== 25 題（值＝canonical fact，直接餵 trigger）====== */
 const has=(v,x)=>Array.isArray(v)&&v.includes(x);
 const QS=[
- // G0 入口
- {id:"G0-Q01",s:0,trig:"—",type:"text",label:"本次診斷的案例／產品名稱或型號？",hint:"用來讓報告指向明確案例，可留空。",when:a=>true},
- {id:"G0-Q02",s:0,trig:"入口閘門",type:"single",label:"本案例是否與電池、含電池產品、電芯／模組、固定式儲能或廢電池有關？",
-   hint:"先確認是否進入電池法診斷；若無關可直接結束。",
-   opts:[{v:"yes",t:"是，有關"},{v:"no",t:"否，無關"},{v:"unknown",t:"不確定",unk:1}],when:a=>true},
- {id:"G0-Q03",s:0,trig:"路徑",type:"single",label:"本案例是否涉及 EU 市場、EU 客戶或關聯公司，或客戶因 EU 電池法要求提供資料？",
-   hint:"判斷你與歐盟市場的關係（直接 / 僅客戶要資料 / 無關）。",
-   opts:[{v:"direct EU route",t:"直接進入 EU 市場"},{v:"customer data request only",t:"僅客戶要求提供資料"},{v:"no EU relevance",t:"與 EU 無關"},{v:"unknown",t:"不確定",unk:1}],
-   when:a=>a["G0-Q02"]==="yes"||a["G0-Q02"]==="unknown"},
- // G1 辨識與分類
- {id:"G1-Q01",s:1,trig:"form of supply",type:"single",label:"標的物最接近哪一種供應形式？",
-   hint:"電池本身 vs 裝在成品裡，適用規則不同。",
-   opts:[{v:"Standalone batteries",t:"獨立電池"},{v:"Batteries incorporated into products",t:"裝在成品裡（筆電/手機等）"},{v:"Battery cells or battery modules made available for end use",t:"電芯／模組（供最終用途）"},{v:"unknown",t:"其他或不確定",unk:1}],
-   when:a=>!!a["G0-Q03"]},
- {id:"G1-Q02",s:1,trig:"stationary BESS",type:"single",label:"標的是否為固定式儲能系統（stationary BESS）？",
-   hint:"固定式儲能要單獨判斷（影響儲能安全與 BMS）。",
-   opts:[{v:"yes",t:"是"},{v:"no",t:"否"},{v:"unknown",t:"不確定",unk:1}],when:a=>!!a["G1-Q01"]},
- {id:"G1-Q03",s:1,trig:"categories of batteries",type:"single",label:"標的電池屬於哪一種電池類別？",
-   hint:"單選；決定後面哪些技術門檻會出現。",
-   opts:[{v:"portable battery",t:"攜帶式 Portable"},{v:"LMT battery",t:"LMT 輕型載具"},{v:"SLI battery",t:"SLI 啟動電池"},{v:"industrial battery",t:"工業 Industrial"},{v:"electric vehicle battery",t:"EV 電動車"},{v:"unknown",t:"不確定",unk:1}],
-   when:a=>!!a["G1-Q02"]},
- // G2 生命階段
- {id:"G2-Q01",s:2,trig:"battery life stage",type:"single",label:"電池目前的生命階段？",
-   hint:"全新與二手／廢棄適用義務不同。",
-   opts:[{v:"new",t:"全新 new"},{v:"used",t:"二手 used"},{v:"waste",t:"廢棄 waste"},{v:"fraction",t:"廢料 fraction"},{v:"unknown",t:"不確定",unk:1}],when:a=>!!a["G1-Q03"]},
- {id:"G2-Q02",s:2,trig:"二次生命（context）",type:"multi",label:"二手／廢棄的來源或目前處理狀態？",
-   hint:"判斷 second-life；可複選。",
-   opts:[{v:"reuse route",t:"再使用"},{v:"repurposing route",t:"改作他用"},{v:"remanufacturing route",t:"再製造"},{v:"preparation for re-use",t:"再使用準備"},{v:"preparation for repurposing",t:"再用途化準備"},{v:"preparation for recycling",t:"回收準備"},{v:"sorting",t:"分選"},{v:"other",t:"其他"},{v:"unknown",t:"不確定",unk:1}],
-   when:a=>["used","waste","fraction"].includes(a["G2-Q01"])},
- {id:"G2-Q03",s:2,trig:"重入市場（context）",type:"single",label:"是否預計重新進入市場或投入使用？",
-   hint:"影響狀態轉換與重入市場責任。",
-   opts:[{v:"yes",t:"是"},{v:"no",t:"否"},{v:"unknown",t:"不確定",unk:1}],when:a=>["used","waste"].includes(a["G2-Q01"])},
- // G3 市場情境
- {id:"G3-Q01",s:3,trig:"路徑（context）",type:"single",label:"你（或相關 EU entity）是直接 EU 市場行為，還是僅支援客戶資料要求？",
-   hint:"界定你是直接責任主體或支援角色。",
-   opts:[{v:"direct EU market route",t:"直接 EU 市場行為"},{v:"support-only customer request",t:"僅支援客戶要資料"},{v:"no route",t:"皆非"},{v:"unknown",t:"不確定",unk:1}],when:a=>!!a["G2-Q01"]},
- {id:"G3-Q02",s:3,trig:"market deployment actions",type:"multi",label:"本案例涉及哪些 EU 市場行為？",
-   hint:"投放／提供／投入使用；可複選。",
-   opts:[{v:"placing on the market",t:"投放市場 placing"},{v:"making available on the market",t:"提供販售 making available"},{v:"putting into service",t:"投入使用 putting into service"},{v:"none of these",t:"皆無"},{v:"unknown",t:"不確定",unk:1}],when:a=>!!a["G3-Q01"]},
- // G4 技術門檻
- {id:"G4-Q01",s:4,trig:"industrial battery charge",type:"single",label:"工業電池是否為可充電？",
-   hint:"碳足跡／性能對工業電池常以可充電為前提。",
-   opts:[{v:"rechargeable",t:"可充電"},{v:"non-rechargeable",t:"不可充電"},{v:"unknown",t:"不確定",unk:1}],when:a=>a["G1-Q03"]==="industrial battery"},
- {id:"G4-Q02",s:4,trig:"industrial battery capacity",type:"single",label:"工業電池容量是否大於 2 kWh？",
-   hint:"多個義務以 2 kWh 為門檻。只需級距。",
-   opts:[{v:"capacity greater than 2 kWh",t:"＞ 2 kWh"},{v:"capacity not greater than 2 kWh",t:"≤ 2 kWh"},{v:"unknown",t:"不確定",unk:1}],when:a=>a["G1-Q03"]==="industrial battery"},
- {id:"G4-Q03",s:4,trig:"industrial battery external",type:"single",label:"工業電池是否屬於「僅外接儲存」exclusively external storage？",
-   hint:"影響再生含量判斷。",
-   opts:[{v:"with exclusively external storage",t:"是，僅外接儲存"},{v:"without exclusively external storage",t:"否"},{v:"unknown",t:"不確定",unk:1}],when:a=>a["G1-Q03"]==="industrial battery"},
- {id:"G4-Q04",s:4,trig:"portable battery general",type:"single",label:"攜帶式電池是否為「一般用途」？",
-   hint:"用於性能與耐久度判斷。",
-   opts:[{v:"yes",t:"是"},{v:"no",t:"否"},{v:"unknown",t:"不確定",unk:1}],when:a=>a["G1-Q03"]==="portable battery"},
- {id:"G4-Q05",s:4,trig:"button cell",type:"single",label:"攜帶式電池是否為鈕扣電池 button cell？",
-   hint:"button cell 會排除部分性能要求。",
-   opts:[{v:"yes",t:"是"},{v:"no",t:"否"},{v:"unknown",t:"不確定",unk:1}],when:a=>a["G1-Q03"]==="portable battery"},
- {id:"G4-Q06",s:4,trig:"active materials",type:"multi",label:"電池活性材料是否含下列金屬？",
-   hint:"用於再生含量（LT07）；可複選。",
-   opts:[{v:"cobalt",t:"鈷 Co"},{v:"lead",t:"鉛 Pb"},{v:"lithium",t:"鋰 Li"},{v:"nickel",t:"鎳 Ni"},{v:"none of these",t:"皆無"},{v:"unknown",t:"不確定",unk:1}],
-   when:a=>["electric vehicle battery","SLI battery","LMT battery","industrial battery"].includes(a["G1-Q03"])},
- {id:"G4-Q07",s:4,trig:"removability exempt",type:"single",label:"裝在成品裡的電池，是否符合「可不拆卸」豁免條件？",
-   hint:"防水/醫療/不可斷電等可豁免。",
-   opts:[{v:"yes",t:"符合豁免"},{v:"no",t:"不符合"},{v:"unknown",t:"不確定",unk:1}],
-   when:a=>a["G1-Q01"]==="Batteries incorporated into products"&&["portable battery","LMT battery"].includes(a["G1-Q03"])},
- // G5 角色責任
- {id:"G5-Q01",s:5,trig:"product supply chain actor",type:"single",label:"你（或相關 EU entity）最接近哪一種供應鏈角色？",
-   hint:"以本案例的 EU 市場/客戶情境回答。",
-   opts:[{v:"manufacturer",t:"製造商"},{v:"authorised representative",t:"授權代表"},{v:"importer",t:"進口商"},{v:"distributor",t:"經銷商"},{v:"fulfilment service provider",t:"履約服務商"},{v:"intermediary service provider under the e-commerce directive",t:"電商中介服務商"},{v:"end-user",t:"終端使用者"},{v:"support-only supplier",t:"純支援供應商"},{v:"unknown",t:"不確定",unk:1}],when:a=>!!a["G3-Q02"]},
- {id:"G5-Q02",s:5,trig:"economic operator",type:"single",label:"本企業或相關 EU entity 是否為 economic operator？",
-   hint:"不熟悉這個詞可選不確定。",
-   opts:[{v:"yes",t:"是"},{v:"no",t:"否"},{v:"unknown",t:"不確定",unk:1}],when:a=>!!a["G5-Q01"]},
- {id:"G5-Q03",s:5,trig:"suppliers of cells/modules",type:"single",label:"是否作為電芯／模組供應商，供應給電池製造商？",
-   hint:"供應鏈角色，與供應形式不同。",
-   opts:[{v:"yes",t:"是"},{v:"no",t:"否"},{v:"unknown",t:"不確定",unk:1}],when:a=>!!a["G5-Q02"]},
- {id:"G5-Q04",s:5,trig:"Art.44（context）",type:"single",label:"身為進口商／經銷商，是否有自有品牌、改裝電池或改變用途？",
-   hint:"可能被視為製造商而承擔其責任。",
-   opts:[{v:"yes",t:"是"},{v:"no",t:"否"},{v:"not applicable",t:"不適用"},{v:"unknown",t:"不確定",unk:1}],when:a=>["importer","distributor"].includes(a["G5-Q01"])},
- {id:"G5-Q05",s:5,trig:"producers",type:"single",label:"本企業或相關 EU entity 是否為 producer？",
-   hint:"EPR 生產者；含製造、進口、貼牌、電商。",
-   opts:[{v:"yes",t:"是"},{v:"no",t:"否"},{v:"unknown",t:"不確定",unk:1}],when:a=>!!a["G5-Q03"]},
- {id:"G5-Q06",s:5,trig:"PRO appointed by producer",type:"single",label:"是否已指定生產者責任組織（PRO）代為履責？",
-   hint:"影響資訊揭露、收集目標、申報由誰處理。",
-   opts:[{v:"yes",t:"是"},{v:"no",t:"否"},{v:"unknown",t:"不確定",unk:1}],when:a=>["yes","unknown"].includes(a["G5-Q05"])},
- {id:"G5-Q07",s:5,trig:"net turnover",type:"single",label:"企業淨營業額是否 ≥ €40M？",
-   hint:"盡職調查門檻。只需級距。",
-   opts:[{v:"less than EUR 40 million",t:"< €40M"},{v:"no less than EUR 40 million",t:"≥ €40M"},{v:"unknown",t:"不確定",unk:1}],when:a=>["yes","unknown"].includes(a["G5-Q02"])},
+ {id:"G0-Q01",s:0,trig:"—",type:"text",label:"請填寫本次診斷的產品名稱或型號，作為報告標題。",hint:"用來讓報告指向明確案例，可留空。",when:a=>true},
+ {id:"G0-Q02",s:0,trig:"入口閘門",type:"single",label:"產品是否涉及電池、含電池產品、電芯、電池模組、固定式儲能系統、已使用過的電池或廢電池？",hint:"先確認是否進入電池法診斷；若無關可直接結束。",
+   opts:[{v:"yes",t:"是"},{v:"no",t:"否"},{v:"unknown",t:"不清楚",unk:1}],when:a=>true},
+ {id:"G0-Q03",s:0,trig:"路徑",type:"single",label:"產品是否與歐盟市場相關？",hint:"判斷你與歐盟市場的關係（直接 / 僅客戶要資料 / 無關）。",
+   opts:[{v:"direct EU route",t:"產品進入歐盟市場"},{v:"customer data request only",t:"客戶要求歐盟法規合規資料"},{v:"no EU relevance",t:"與歐盟無關"},{v:"unknown",t:"不清楚",unk:1}],when:a=>a["G0-Q02"]==="yes"||a["G0-Q02"]==="unknown"},
+ {id:"G1-Q01",s:1,trig:"form of supply",type:"single",label:"電池產品以何種形式供應？",hint:"電池本身 vs 裝在成品裡，適用規則不同。",
+   opts:[{v:"Standalone batteries",t:"電池"},{v:"Batteries incorporated into products",t:"安裝在其他產品裡（如筆電、手機）"},{v:"Battery cells or battery modules made available for end use",t:"電芯/電池模組"},{v:"unknown",t:"其他"},{v:"unknown",t:"不清楚",unk:1}],when:a=>!!a["G0-Q03"]},
+ {id:"G1-Q02",s:1,trig:"stationary BESS",type:"single",label:"電池產品是否屬於固定式儲能系統？",hint:"固定式儲能要單獨判斷（影響儲能安全與 BMS）。",opts:[{v:"yes",t:"是"},{v:"no",t:"否"},{v:"unknown",t:"不清楚",unk:1}],when:a=>!!a["G1-Q01"]},
+ {id:"G1-Q03",s:1,trig:"categories of batteries",type:"single",label:"電池產品屬於哪一種類別？",hint:"單選；決定後面哪些技術門檻會出現。",
+   opts:[{v:"portable battery",t:"可攜式電池"},{v:"LMT battery",t:"輕型運輸工具電池"},{v:"SLI battery",t:"啟動照明和點火電池"},{v:"industrial battery",t:"工業電池"},{v:"electric vehicle battery",t:"電動車電池"},{v:"unknown",t:"不清楚",unk:1}],when:a=>!!a["G1-Q02"]},
+ {id:"G2-Q01",s:2,trig:"battery life stage",type:"single",label:"電池產品所屬的生命週期階段？",hint:"全新與二手／廢棄適用義務不同。",
+   opts:[{v:"new",t:"全新電池"},{v:"used",t:"已使用電池"},{v:"waste",t:"廢棄電池"},{v:"fraction",t:"廢電池破碎萃取物"},{v:"unknown",t:"不清楚",unk:1}],when:a=>!!a["G1-Q03"]},
+ {id:"G2-Q02",s:2,trig:"二次生命（context）",type:"multi",label:"若您的製程涉及已使用電池或廢電池，請選擇處理方式。",hint:"判斷 second-life；可複選。",
+   opts:[{v:"reuse route",t:"重新使用"},{v:"repurposing route",t:"改變用途"},{v:"remanufacturing route",t:"再製造"},{v:"preparation for re-use",t:"重新使用（含廢棄物身份轉換）"},{v:"preparation for repurposing",t:"改變用途（含廢棄物身份轉換）"},{v:"preparation for recycling",t:"回收（含廢棄物身份轉換）"},{v:"sorting",t:"分揀"},{v:"other",t:"其他"},{v:"unknown",t:"不清楚",unk:1}],when:a=>["used","waste","fraction"].includes(a["G2-Q01"])},
+ {id:"G2-Q03",s:2,trig:"重入市場（context）",type:"single",label:"若電池產品為使用過的電池，或廢電池，是否預計重新進入市場或投入使用？",hint:"影響狀態轉換與重入市場責任。",opts:[{v:"yes",t:"是"},{v:"no",t:"否"},{v:"unknown",t:"不清楚",unk:1}],when:a=>["used","waste"].includes(a["G2-Q01"])},
+ {id:"G3-Q01",s:3,trig:"路徑（context）",type:"single",label:"貴公司（或您的歐盟子公司）是直接將產品銷入歐盟，還是提供客戶歐盟合規資料需求？",hint:"界定你是直接責任主體或支援角色。",
+   opts:[{v:"direct EU market route",t:"直接進入歐盟市場"},{v:"support-only customer request",t:"僅支援客戶歐盟合規資料"},{v:"no route",t:"兩者皆非"},{v:"unknown",t:"不清楚",unk:1}],when:a=>!!a["G2-Q01"]},
+ {id:"G3-Q02",s:3,trig:"market deployment actions",type:"multi",label:"產品進入歐盟市場的方式爲何？",hint:"投放／提供／投入使用；可複選。",
+   opts:[{v:"placing on the market",t:"投放市場"},{v:"making available on the market",t:"在市場上提供販售"},{v:"putting into service",t:"投入使用"},{v:"none of these",t:"皆非"},{v:"unknown",t:"不清楚",unk:1}],when:a=>!!a["G3-Q01"]},
+ {id:"G4-Q01",s:4,trig:"industrial battery charge",type:"single",label:"工業電池是否「可充電」？",hint:"碳足跡／性能對工業電池常以可充電為前提。",
+   opts:[{v:"rechargeable",t:"可充電"},{v:"non-rechargeable",t:"不可充電"},{v:"unknown",t:"不清楚",unk:1}],when:a=>a["G1-Q03"]==="industrial battery"},
+ {id:"G4-Q02",s:4,trig:"industrial battery capacity",type:"single",label:"工業電池裝置容量是否大於2 kWh？",hint:"多個義務以 2 kWh 為門檻。只需級距。",
+   opts:[{v:"capacity greater than 2 kWh",t:"大於2 kWh"},{v:"capacity not greater than 2 kWh",t:"等於或小於2 kWh"},{v:"unknown",t:"不清楚",unk:1}],when:a=>a["G1-Q03"]==="industrial battery"},
+ {id:"G4-Q03",s:4,trig:"industrial battery external",type:"single",label:"工業電池產品是否依賴有外部儲存裝置儲能（如：液流電池）？",hint:"影響再生含量判斷。",
+   opts:[{v:"with exclusively external storage",t:"是"},{v:"without exclusively external storage",t:"否"},{v:"unknown",t:"不清楚",unk:1}],when:a=>a["G1-Q03"]==="industrial battery"},
+ {id:"G4-Q04",s:4,trig:"portable battery general",type:"single",label:"可攜式電池產品是否屬於傳統消費性電池（如：三號四號電池、水銀電池、相機電池等）？",hint:"用於性能與耐久度判斷。",opts:[{v:"yes",t:"是"},{v:"no",t:"否"},{v:"unknown",t:"不清楚",unk:1}],when:a=>a["G1-Q03"]==="portable battery"},
+ {id:"G4-Q05",s:4,trig:"button cell",type:"single",label:"可攜式電池產品是否屬於鈕扣電池？",hint:"鈕扣電池會排除部分性能要求。",opts:[{v:"yes",t:"是"},{v:"no",t:"否"},{v:"unknown",t:"不清楚",unk:1}],when:a=>a["G1-Q03"]==="portable battery"},
+ {id:"G4-Q06",s:4,trig:"active materials",type:"multi",label:"電池產品是否包含下列材料？",hint:"用於再生含量（LT07）；可複選。",
+   opts:[{v:"cobalt",t:"鈷"},{v:"lead",t:"鉛"},{v:"lithium",t:"鋰"},{v:"nickel",t:"鎳"},{v:"none of these",t:"以上皆不包含"},{v:"unknown",t:"不清楚",unk:1}],when:a=>["electric vehicle battery","SLI battery","LMT battery","industrial battery"].includes(a["G1-Q03"])},
+ {id:"G4-Q07",s:4,trig:"removability exempt",type:"single",label:"可攜式電池產品或輕型運輸工具電池，是否適用於防水設備、醫療設備或不斷電設備？",hint:"防水/醫療/不可斷電等可豁免。",opts:[{v:"yes",t:"是"},{v:"no",t:"否"},{v:"unknown",t:"不清楚",unk:1}],when:a=>a["G1-Q01"]==="Batteries incorporated into products"&&["portable battery","LMT battery"].includes(a["G1-Q03"])},
+ {id:"G5-Q01",s:5,trig:"product supply chain actor",type:"single",label:"貴公司（或您的歐盟子公司），在產品價值鏈上的角色？",hint:"以本案例的 EU 市場/客戶情境回答。",
+   opts:[{v:"manufacturer",t:"製造商"},{v:"authorised representative",t:"歐盟授權代表"},{v:"importer",t:"進口商"},{v:"distributor",t:"經銷商"},{v:"fulfilment service provider",t:"履行服務提供者"},{v:"intermediary service provider under the e-commerce directive",t:"《電子商務指令》規範下的中介服務提供者"},{v:"end-user",t:"使用者"},{v:"unknown",t:"不清楚",unk:1}],when:a=>!!a["G3-Q02"]},
+ {id:"G5-Q02",s:5,trig:"economic operator",type:"single",label:"貴公司是否為《歐盟市場監督條例》下規範的營運商？",hint:"不熟悉這個詞可選不清楚。",opts:[{v:"yes",t:"是"},{v:"no",t:"否"},{v:"unknown",t:"不清楚",unk:1}],when:a=>!!a["G5-Q01"]},
+ {id:"G5-Q03",s:5,trig:"suppliers of cells/modules",type:"single",label:"貴公司是否為電芯或電池模組的供應商？",hint:"供應鏈角色，與供應形式不同。",opts:[{v:"yes",t:"是"},{v:"no",t:"否"},{v:"unknown",t:"不清楚",unk:1}],when:a=>!!a["G5-Q02"]},
+ {id:"G5-Q04",s:5,trig:"Art.44（context）",type:"single",label:"產品是否涉及貼牌販售、改裝或修改電池用途？",hint:"可能被視為製造商而承擔其責任。",
+   opts:[{v:"yes",t:"是"},{v:"no",t:"否"},{v:"not applicable",t:"不適用"},{v:"unknown",t:"不清楚",unk:1}],when:a=>["importer","distributor"].includes(a["G5-Q01"])},
+ {id:"G5-Q05",s:5,trig:"producers",type:"single",label:"貴公司（或您的歐盟子公司）是否為《廢棄物架構指令》下具備「延伸生產者責任（EPR）」的「生產者」？",hint:"EPR 生產者；含製造、進口、貼牌、電商。",opts:[{v:"yes",t:"是"},{v:"no",t:"否"},{v:"unknown",t:"不清楚",unk:1}],when:a=>!!a["G5-Q03"]},
+ {id:"G5-Q06",s:5,trig:"PRO appointed by producer",type:"single",label:"貴公司（或您的歐盟子公司）是否已指定「生產者責任組織（PRO）」協助履行「延伸生產者責任（EPR）」？",hint:"影響資訊揭露、收集目標、申報由誰處理。",opts:[{v:"yes",t:"是"},{v:"no",t:"否"},{v:"unknown",t:"不清楚",unk:1}],when:a=>["yes","unknown"].includes(a["G5-Q05"])},
+ {id:"G5-Q07",s:5,trig:"net turnover",type:"single",label:"貴公司（含集團母公司）淨營業額是否小於4000萬歐元？",hint:"盡職調查門檻。只需級距。",
+   opts:[{v:"less than EUR 40 million",t:"小於4000萬歐元"},{v:"no less than EUR 40 million",t:"大於或等於4000萬歐元"},{v:"unknown",t:"不清楚",unk:1}],when:a=>["yes","unknown"].includes(a["G5-Q02"])},
 ];
 
 const S={a:{},idx:0,skipped:new Set(),ended:null,hist:[],started:false};
@@ -229,7 +190,7 @@ function optHTML(q){
 }
 function qHTML(q){
   var multi=q.type==="multi"?'<span class="multi-tag">可複選</span>':"";
-  return '<div class="q"><div class="qid">'+q.id+' · '+q.trig+'</div><div class="q-label">'+q.label+multi+'</div><span class="q-hint">'+q.hint+'</span>'+optHTML(q)+'</div>';
+  return '<div class="q"><div class="q-label">'+q.label+multi+'</div><span class="q-hint">'+q.hint+'</span>'+optHTML(q)+'</div>';
 }
 function canNext(){ return stageQs(S.idx).every(function(q){ if(q.type==="text")return true; if(q.type==="multi")return (S.a[q.id]||[]).length>0; return !!S.a[q.id]; }); }
 function outOfScope(){ return S.a["G0-Q02"]==="no"; }
@@ -317,13 +278,15 @@ function endHTML(){
 /* ====== 入口頁（單一卡片）====== */
 function landingHTML(){
  return '<div class="landing">'+
-  '<div class="lhero"><div class="licon">🔋</div>'+
-  '<h1>歐盟電池法 — 初步合規診斷</h1>'+
-  '<p class="lsub">約 6–10 分鐘，初步判斷你的產品是否受 EU 2023/1542 規範、涉及哪些義務（Legal Theme）。</p>'+
+  '<div class="lhero"><div class="licon"><svg width="44" height="44" viewBox="0 0 42 42" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="6" y="14" width="26" height="15" rx="2.5" stroke="#1b2cff" stroke-width="2.2"/><rect x="33.5" y="18.5" width="3.2" height="6" rx="1" fill="#1b2cff"/><path d="M12.5 21.5 l4 4 l8 -8.5" stroke="#1b2cff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>'+
+  '<h1>把電池法規，變成貴公司的市場先機</h1>'+
+  '<p class="lsub">10 分鐘，看清貴公司在 EU 2023/1542 下的義務範圍與下一步。</p>'+
   '</div>'+
   '<div class="lcard">'+
-   '<p>企業要判斷自己是否受歐盟電池法規範、涉及哪些義務，通常需要顧問逐條解讀，門檻高、耗時。本工具用<span class="lk">分階段問答</span>，依決策樹自動判斷適用的 Legal Theme，產出初步風險畫像，作為後續諮詢的起點。</p>'+
-   '<p><span class="lk">適合誰用：</span>ICT／電子產品企業（筆電、手機、網通設備、IoT 裝置，以及電芯／模組／零組件供應商）。回答約 10–20 題（依產品自動跳題），系統把答案轉成法規 trigger、比對各 Legal Theme 的啟動條件，輸出「確定適用 / 建議補充資料 / 無法判斷」三類結果。</p>'+
+   '<p>歐盟電池法橫跨碳足跡、再生料、電池護照到生產者責任，條文繁多、彼此牽動。我們把法規拆解成一套分階段診斷，帶貴公司從產品出發，逐步釐清哪些義務真正適用——讓第一步不必逐條翻法條。</p>'+
+   '<p><span class="lk">適用對象：</span>在歐盟銷售電池、或銷售含電池產品的企業；特別適合電子與資通訊產品（筆電、手機、網通設備、IoT 裝置）及電芯／模組／零組件供應商。回答約 10–20 題（依產品情況自動調整），系統即時比對歐盟電池法的各項義務，產出下列三層結果，作為內部評估與後續諮詢的起點：</p>'+
+   '<div class="rpills"><span class="rp rp1">確定適用</span><span class="rp rp2">建議補充</span><span class="rp rp3">尚難判斷</span></div>'+
+   '<p class="ltrust">🔒 送出問卷後，系統會儲存貴公司的作答與診斷結果，用於產出報告與內部紀錄；email 為選填，僅供寄送報告備份。資料保留 12 個月，可隨時來信要求刪除。</p>'+
    '<p class="ldisc">本工具由 <b>REnato lab</b> 研究開發，法律依據為 Regulation (EU) 2023/1542；僅提供初步自評，不構成法律意見，實際義務以最新法規與授權法規為準。聯絡：<a href="mailto:info@renato-lab.com">info@renato-lab.com</a></p>'+
   '</div>'+
   '<button class="btn btn-primary lbtn2" style="display:block;margin:0 auto;padding:13px 30px" onclick="startTool()">開始診斷 →</button></div>';
