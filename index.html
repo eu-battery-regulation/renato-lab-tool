@@ -5,8 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>歐盟電池法 — 初步合規診斷 | REnato lab</title>
 <style>
-  :root{--green:#1f7a4d;--green-light:#e7f3ec;--ink:#1a2421;--muted:#5b6b64;
-    --line:#dfe5e1;--bg:#f7f9f7;--orange:#d97706;--blue:#2563eb;--card:#fff;}
+  :root{--green:#1e5aa8;--green-light:#e9f1fb;--ink:#16202b;--muted:#5b6675;
+    --line:#dbe2ec;--bg:#f5f8fc;--orange:#d97706;--blue:#2563eb;--card:#fff;}
   *{box-sizing:border-box}
   body{font-family:"Noto Sans TC",-apple-system,"PingFang TC","Microsoft JhengHei",sans-serif;
     margin:0;background:var(--bg);color:var(--ink);line-height:1.55}
@@ -14,16 +14,14 @@
   header h1{margin:0;font-size:17px} header p{margin:4px 0 0;font-size:12px;opacity:.9}
   .wrap{max-width:740px;margin:0 auto;padding:18px 18px 60px}
   .progress{display:flex;gap:5px;margin-bottom:6px}
-  .pstep{flex:1;text-align:center;font-size:10.5px;color:var(--muted);cursor:pointer;transition:.12s}
-  .pstep:hover{color:var(--green)} .pstep:hover .pbar{background:#9ec7b2}
+  .pstep{flex:1;text-align:center;font-size:10px;color:var(--muted);cursor:pointer;transition:.12s}
+  .pstep:hover{color:var(--green)} .pstep:hover .pbar{background:#9cb9de}
   .phint{font-size:10.5px;color:#b0a98f;text-align:center;margin-bottom:14px}
   .pbar{height:6px;border-radius:4px;background:var(--line);margin-bottom:5px}
   .pstep.done .pbar{background:var(--green)} .pstep.done{color:var(--green)}
   .pstep.current .pbar{background:var(--green)} .pstep.current{color:var(--ink);font-weight:700}
   .pstep.skipped .pbar{background:#e8e3d6;background-image:repeating-linear-gradient(45deg,#e8e3d6 0 4px,#f2eee3 4px 8px)}
   .pstep.skipped{color:#b0a98f}
-  .privacy{background:#eef4ff;border:1px solid #cfe0ff;border-radius:10px;padding:10px 14px;
-    margin-bottom:14px;font-size:11.5px;color:#27406b;line-height:1.55}
   .card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:20px 22px;margin-bottom:14px}
   .stagehd{font-size:12px;color:var(--green);font-weight:700;letter-spacing:.4px;margin-bottom:4px}
   .stagesub{font-size:11.5px;color:var(--muted);margin-bottom:16px}
@@ -42,19 +40,13 @@
   input[type=text]{width:100%;max-width:380px;padding:9px 12px;border:1px solid var(--line);border-radius:8px;font-size:13px}
   .nav{display:flex;justify-content:space-between;gap:12px;margin-top:6px}
   .btn{border:none;border-radius:10px;padding:12px 24px;font-size:14.5px;font-weight:600;cursor:pointer}
-  .btn-primary{background:var(--green);color:#fff} .btn-primary:disabled{background:#bcd3c6;cursor:not-allowed}
+  .btn-primary{background:var(--green);color:#fff} .btn-primary:disabled{background:#b6c7e0;cursor:not-allowed}
   .btn-ghost{background:#fff;color:var(--muted);border:1px solid var(--line)}
   .end{text-align:center;padding:14px 8px}
   .end .icon{font-size:38px;margin-bottom:6px} .end h2{margin:0 0 6px;font-size:18px}
   .end p{color:var(--muted);max-width:460px;margin:0 auto 14px;font-size:13px}
   .count{display:inline-block;background:var(--green-light);color:var(--green);font-weight:700;
     border-radius:20px;padding:4px 14px;margin-bottom:14px;font-size:13px}
-  .summary{text-align:left;background:var(--bg);border:1px solid var(--line);border-radius:10px;
-    padding:12px 15px;margin:0 auto 14px;max-width:560px;font-size:12.5px}
-  .summary div{padding:3px 0;border-bottom:1px solid var(--line)} .summary div:last-child{border-bottom:none}
-  .summary b{color:var(--ink)} .summary .v{color:var(--green);font-weight:600} .summary .t{color:#9aa39d;font-size:10px}
-  .review{background:#fdf3e3;border:1px solid #f3d9a8;color:#8a5a00;border-radius:8px;
-    padding:9px 12px;font-size:12px;margin:0 auto 14px;max-width:560px;text-align:left}
   .note{font-size:11px;color:#b0a98f;margin-top:12px;text-align:center}
   .zone{margin-bottom:16px}
   .zone-h{font-size:13px;font-weight:700;padding:6px 12px;border-radius:8px;margin-bottom:8px}
@@ -74,23 +66,22 @@
   .consent{display:flex;gap:7px;align-items:center;font-size:12.5px;margin-bottom:8px;cursor:pointer}
   .privacy2{font-size:11px;color:var(--muted);line-height:1.6;margin-bottom:10px}
   .emaildone{color:var(--green);font-size:13px;font-weight:600}
-  .landing{max-width:680px;margin:0 auto}
-  .lhero{text-align:center;padding:14px 10px 20px}
+  .landing{max-width:620px;margin:0 auto}
+  .lhero{text-align:center;padding:14px 10px 18px}
   .licon{font-size:46px}
   .lhero h1{font-size:22px;margin:8px 0 6px}
-  .lsub{color:var(--muted);font-size:14px;max-width:480px;margin:0 auto 16px;line-height:1.6}
+  .lsub{color:var(--muted);font-size:14px;max-width:460px;margin:0 auto 18px;line-height:1.6}
   .lbtn{padding:14px 34px;font-size:16px}
-  .lcard{background:#fff;border:1px solid var(--line);border-radius:12px;padding:16px 18px;margin-bottom:12px}
-  .lcard h3{margin:0 0 6px;font-size:15px;color:var(--green)}
-  .lcard p{margin:0;font-size:13.5px;color:var(--ink);line-height:1.65}
-  .ldev b{color:var(--ink)}
-  .ldisc{color:var(--muted);font-size:12px;margin-top:8px!important}
-  .lbtn2{display:block;margin:8px auto 0;padding:13px 30px}
+  .lcard{background:#fff;border:1px solid var(--line);border-radius:12px;padding:18px 20px;margin-bottom:14px}
+  .lcard p{margin:0 0 12px;font-size:13.5px;color:var(--ink);line-height:1.7}
+  .lcard p:last-child{margin-bottom:0}
+  .lcard .lk{color:var(--green);font-weight:700}
+  .ldisc{color:var(--muted);font-size:12px;border-top:1px solid var(--line);padding-top:12px;margin-top:4px!important}
 </style>
 </head>
 <body>
 <header>
-  <h1>歐盟電池法 — 初步合規診斷（S1）</h1>
+  <h1>歐盟電池法 — 初步合規診斷</h1>
   <p>ICT／電子產品 · 6 階段 · 約 6–10 分鐘完成（依作答自動跳題）</p>
 </header>
 <div class="wrap">
@@ -99,97 +90,108 @@
 </div>
 
 <script>
-/* ===== 6 階段 ===== */
-const STAGES = [
-  {n:"電池辨識", sub:"先確認是不是電池、哪一類、怎麼供應"},
-  {n:"生命階段", sub:"全新或二手／翻新，決定後續分支"},
-  {n:"EU 市場行為", sub:"是否在歐盟投放或提供"},
-  {n:"角色與責任", sub:"你在供應鏈的角色"},
-  {n:"技術門檻", sub:"依電池類別問對應的門檻與特性"},
-  {n:"EPR／盡職調查", sub:"生產者責任與盡職調查門檻"},
+/* ====== 設定（接 Apps Script）====== */
+const GAS_URL='https://script.google.com/a/macros/renato-lab.com/s/AKfycbzuDMdMDPTya5ksi7dqjBxsZI3pASMfY1FaddiomB2gK8QircclpN1uB3b15YPz93Y_sw/exec';
+const GAS_TOKEN='2026_eu_battery_regulation_v1';
+
+/* ====== 6 Gate ====== */
+const STAGES=[
+ {n:"Entry｜範圍",sub:"先確認是否進入電池法診斷"},
+ {n:"Object｜辨識分類",sub:"標的形態、是否儲能、電池類別"},
+ {n:"Life｜生命階段",sub:"全新或二手／廢棄"},
+ {n:"Route｜市場情境",sub:"EU 市場行為與客戶路徑"},
+ {n:"Technical｜技術門檻",sub:"依電池類別問對應門檻"},
+ {n:"Actor｜角色責任",sub:"供應鏈角色與責任"},
 ];
 
-/* ===== 25 題題庫（trigger 為引擎事實；when 為跳題條件）===== */
+/* ====== 25 題（值＝canonical fact，直接餵 trigger）====== */
 const has=(v,x)=>Array.isArray(v)&&v.includes(x);
-const QS = [
- // 階段 1
- {id:"Q-S1-000",s:0,trig:"none",type:"text",label:"這次要診斷的產品／電池／產品線名稱是？",hint:"用來讓報告指向明確案例，非法規判斷。可留空。",when:a=>true},
- {id:"Q-S1-001",s:0,trig:"categories of batteries",type:"multi",
-   label:"這個案例的電池屬於哪一（幾）類？",hint:"同一產品含多種電池可複選；決定後面哪些義務會啟動。",
-   opts:[{v:"portable",t:"攜帶式（手機/筆電等）"},{v:"lmt",t:"LMT 輕型載具"},{v:"sli",t:"SLI 啟動電池"},{v:"ev",t:"EV 電動車"},{v:"industrial",t:"工業（資料中心儲能等）"},{v:"none",t:"不是電池、也不含電池",none:1},{v:"unknown",t:"不確定",unk:1}],when:a=>true},
- {id:"Q-S1-002",s:0,trig:"form of supply",type:"single",
-   label:"供應形式（form of supply）是哪一種？",hint:"電池本身 vs 裝在成品裡，適用規則不同（成品有可拆換要求）。",
-   opts:[{v:"standalone",t:"獨立電池"},{v:"incorporated",t:"裝在成品裡（如筆電/手機）"},{v:"cellmodule",t:"電芯/模組（供下一階製造）"},{v:"unknown",t:"不確定",unk:1}],when:a=>has(a["Q-S1-001"],"portable")||has(a["Q-S1-001"],"lmt")||has(a["Q-S1-001"],"sli")||has(a["Q-S1-001"],"ev")||has(a["Q-S1-001"],"industrial")||has(a["Q-S1-001"],"unknown")},
- {id:"Q-S1-003",s:0,trig:"stationary BESS",type:"single",
-   label:"這是否為固定式儲能系統（stationary BESS）？",hint:"固定式儲能要單獨判斷（影響儲能安全與 BMS 要求）。",
-   opts:[{v:"yes",t:"是"},{v:"no",t:"否"},{v:"unknown",t:"不確定",unk:1}],when:a=>!!a["Q-S1-002"]},
- // 階段 2
- {id:"Q-S1-004",s:1,trig:"battery life stage",type:"single",
-   label:"電池目前的生命階段是？",hint:"全新與二手／翻新適用義務不同；多數 ICT 是全新品。",
-   opts:[{v:"new",t:"全新"},{v:"used",t:"二手／使用過"},{v:"waste",t:"廢棄"},{v:"fraction",t:"廢料分支 fraction"},{v:"unknown",t:"不確定",unk:1}],when:a=>!!a["Q-S1-002"]},
- {id:"Q-S1-005",s:1,trig:"used battery source",type:"multi",
-   label:"這批二手電池的來源／處置是？",hint:"判斷 second-life；可複選。",
-   opts:[{v:"reuse",t:"再使用 reuse"},{v:"repurposed",t:"改作他用 repurposed"},{v:"remanufactured",t:"再製造 remanufactured"},{v:"unknown",t:"不確定",unk:1}],when:a=>a["Q-S1-004"]==="used"},
- {id:"Q-S1-006",s:1,trig:"treatment actions",type:"multi",
-   label:"這顆電池是否經過下列處理？",hint:"判斷狀態轉換與重入市場責任；可複選。",
-   opts:[{v:"sorting",t:"分選 sorting"},{v:"prep-reuse",t:"再使用準備"},{v:"prep-repurpose",t:"再用途化準備"},{v:"remanufacture",t:"再製造"},{v:"none",t:"皆無"},{v:"unknown",t:"不確定",unk:1}],when:a=>a["Q-S1-004"]==="used"||a["Q-S1-004"]==="waste"},
- // 階段 3
- {id:"Q-S1-007",s:2,trig:"market deployment actions",type:"multi",
-   label:"電池是否在 EU 發生下列市場行為？",hint:"是否投放/提供/投入使用，決定市場相關義務；可複選。",
-   opts:[{v:"placing",t:"投放市場 placing"},{v:"available",t:"提供販售 making available"},{v:"service",t:"投入使用 putting into service"},{v:"none",t:"皆無"},{v:"unknown",t:"不確定",unk:1}],when:a=>!!a["Q-S1-004"]},
- // 階段 4
- {id:"Q-S1-008",s:3,trig:"product supply chain actor",type:"multi",
-   label:"你（或你的 EU 關係企業）在供應鏈是哪些角色？",hint:"以本案例的 EU 市場/客戶情境回答；可複選。",
-   opts:[{v:"manufacturer",t:"製造商"},{v:"authrep",t:"授權代表"},{v:"importer",t:"進口商"},{v:"distributor",t:"經銷商"},{v:"fulfilment",t:"履約服務商"},{v:"none",t:"皆非"},{v:"unknown",t:"不確定",unk:1}],when:a=>!!a["Q-S1-007"]},
- {id:"Q-S1-009A",s:3,trig:"economic operator",type:"single",
-   label:"你是否自認符合 economic operator？",hint:"不熟悉這個詞就選不確定，下一題會用具體行為推導。",
-   opts:[{v:"yes",t:"是"},{v:"no",t:"否"},{v:"unknown",t:"不確定",unk:1}],when:a=>!!a["Q-S1-008"]},
- {id:"Q-S1-009B",s:3,trig:"economic operator",type:"multi",
-   label:"以下符合哪些？（用來推導 economic operator）",hint:"符合任一項，系統就推導為 economic operator；可複選。",
-   opts:[{v:"manufacturer",t:"製造商"},{v:"importer",t:"進口商"},{v:"distributor",t:"經銷商"},{v:"authrep",t:"授權代表"},{v:"none",t:"皆非"},{v:"unknown",t:"不確定",unk:1}],when:a=>!!a["Q-S1-009A"]},
- {id:"Q-S1-010",s:3,trig:"suppliers of cells/modules",type:"single",
-   label:"你是否為電芯／電池模組供應商？",hint:"供應鏈角色，與供應形式不同。",
-   opts:[{v:"yes",t:"是"},{v:"no",t:"否"},{v:"unknown",t:"不確定",unk:1}],when:a=>!!a["Q-S1-009B"]},
- {id:"Q-S1-011",s:3,trig:"supplementary（Art.44 轉換）",type:"multi",
-   label:"身為進口商/經銷商，是否有以自己名義從事下列行為？",hint:"可能被視為製造商而承擔其責任；可複選。",
-   opts:[{v:"ownbrand",t:"自有品牌販售"},{v:"modify",t:"改裝電池"},{v:"changeuse",t:"改變預定用途"},{v:"none",t:"皆無"},{v:"unknown",t:"不確定",unk:1}],when:a=>has(a["Q-S1-008"],"importer")||has(a["Q-S1-008"],"distributor")},
- // 階段 5
- {id:"Q-S1-012",s:4,trig:"portable battery general",type:"single",
-   label:"攜帶式電池是否為「一般用途」？",hint:"用於性能與耐久度（LT09）判斷。",
-   opts:[{v:"yes",t:"是"},{v:"no",t:"否"},{v:"unknown",t:"不確定",unk:1}],when:a=>has(a["Q-S1-001"],"portable")},
- {id:"Q-S1-013",s:4,trig:"button cell",type:"single",
-   label:"攜帶式電池是否為鈕扣電池 button cell？",hint:"button cell 會排除部分性能要求。",
-   opts:[{v:"yes",t:"是"},{v:"no",t:"否"},{v:"unknown",t:"不確定",unk:1}],when:a=>has(a["Q-S1-001"],"portable")},
- {id:"Q-S1-014",s:4,trig:"industrial battery charge",type:"single",
-   label:"工業電池是否可充電？",hint:"碳足跡/性能對工業電池常以可充電為前提。",
-   opts:[{v:"rechargeable",t:"可充電"},{v:"non",t:"不可充電"},{v:"unknown",t:"不確定",unk:1}],when:a=>has(a["Q-S1-001"],"industrial")},
- {id:"Q-S1-015",s:4,trig:"industrial battery capacity",type:"single",
-   label:"工業電池容量是否大於 2 kWh？",hint:"多個義務（碳足跡、護照）以 2 kWh 為門檻。只需級距。",
-   opts:[{v:"gt2",t:"＞ 2 kWh"},{v:"le2",t:"≤ 2 kWh"},{v:"unknown",t:"不確定",unk:1}],when:a=>has(a["Q-S1-001"],"industrial")},
- {id:"Q-S1-016",s:4,trig:"industrial battery external",type:"single",
-   label:"工業電池是否「僅外接儲存」exclusively external storage？",hint:"影響再生含量（LT07）判斷。",
-   opts:[{v:"with",t:"是，僅外接儲存"},{v:"without",t:"否"},{v:"unknown",t:"不確定",unk:1}],when:a=>has(a["Q-S1-001"],"industrial")},
- {id:"Q-S1-017",s:4,trig:"active materials",type:"multi",
-   label:"電池活性材料是否含下列任一金屬？",hint:"用於再生含量（LT07 Art.8）；可複選。",
-   opts:[{v:"cobalt",t:"鈷 Co"},{v:"lead",t:"鉛 Pb"},{v:"lithium",t:"鋰 Li"},{v:"nickel",t:"鎳 Ni"},{v:"none",t:"皆無"},{v:"unknown",t:"不確定",unk:1}],when:a=>has(a["Q-S1-001"],"ev")||has(a["Q-S1-001"],"sli")||has(a["Q-S1-001"],"lmt")||has(a["Q-S1-001"],"industrial")},
- {id:"Q-S1-018",s:4,trig:"removability exemption",type:"single",
-   label:"裝在成品裡的電池，是否符合「可不拆卸」豁免條件？",hint:"防水/醫療/不可斷電等可豁免；否則須讓使用者可自行更換。",
-   opts:[{v:"yes",t:"符合豁免"},{v:"no",t:"不符合"},{v:"unknown",t:"不確定",unk:1}],when:a=>a["Q-S1-002"]==="incorporated"&&(has(a["Q-S1-001"],"portable")||has(a["Q-S1-001"],"lmt"))},
- // 階段 6
- {id:"Q-S1-019A",s:5,trig:"supports producers",type:"single",
-   label:"是否在某個 EU 會員國「首次供應（first making available）」電池？",hint:"EPR 生產者判斷以會員國為單位。",
-   opts:[{v:"yes",t:"是"},{v:"no",t:"否"},{v:"unknown",t:"不確定",unk:1}],when:a=>!!a["Q-S1-007"]&&!!a["Q-S1-008"]},
- {id:"Q-S1-019B",s:5,trig:"producers",type:"multi",
-   label:"符合哪一種 producer 身分？（用來推導生產者）",hint:"以具體行為推導；可複選。",
-   opts:[{v:"ownname",t:"以自有名義製造電池"},{v:"resell",t:"轉售他人製造的電池"},{v:"import",t:"進口並首次供應"},{v:"none",t:"皆非"},{v:"unknown",t:"不確定",unk:1}],when:a=>a["Q-S1-019A"]==="yes"||a["Q-S1-019A"]==="unknown"},
- {id:"Q-S1-019C",s:5,trig:"supplementary（會員國別）",type:"text",
-   label:"涉及哪些 EU 會員國？（可留空）",hint:"EPR 義務按會員國註冊履責，保留國別上下文。",when:a=>a["Q-S1-019A"]==="yes"||a["Q-S1-019A"]==="unknown"},
- {id:"Q-S1-020",s:5,trig:"PRO appointed by producer",type:"single",
-   label:"是否已由 producer 指定 PRO（生產者責任組織）代為履責？",hint:"影響資訊揭露、收集目標、申報由誰處理。",
-   opts:[{v:"yes",t:"是"},{v:"no",t:"否"},{v:"unknown",t:"不確定",unk:1}],when:a=>a["Q-S1-019A"]==="yes"||a["Q-S1-019A"]==="unknown"},
- {id:"Q-S1-021",s:5,trig:"net turnover",type:"single",
-   label:"公司／相關 economic operator 的淨營業額？",hint:"盡職調查（LT19）對 < €40M 有豁免。只需級距。",
-   opts:[{v:"lt40",t:"< €40M"},{v:"ge40",t:"≥ €40M"},{v:"unknown",t:"不確定",unk:1}],when:a=>a["Q-S1-009A"]==="yes"||(Array.isArray(a["Q-S1-009B"])&&a["Q-S1-009B"].some(x=>x!=="none"&&x!=="unknown"))},
+const QS=[
+ // G0 入口
+ {id:"G0-Q01",s:0,trig:"—",type:"text",label:"本次診斷的案例／產品名稱或型號？",hint:"用來讓報告指向明確案例，可留空。",when:a=>true},
+ {id:"G0-Q02",s:0,trig:"入口閘門",type:"single",label:"本案例是否與電池、含電池產品、電芯／模組、固定式儲能或廢電池有關？",
+   hint:"先確認是否進入電池法診斷；若無關可直接結束。",
+   opts:[{v:"yes",t:"是，有關"},{v:"no",t:"否，無關"},{v:"unknown",t:"不確定",unk:1}],when:a=>true},
+ {id:"G0-Q03",s:0,trig:"路徑",type:"single",label:"本案例是否涉及 EU 市場、EU 客戶或關聯公司，或客戶因 EU 電池法要求提供資料？",
+   hint:"判斷你與歐盟市場的關係（直接 / 僅客戶要資料 / 無關）。",
+   opts:[{v:"direct EU route",t:"直接進入 EU 市場"},{v:"customer data request only",t:"僅客戶要求提供資料"},{v:"no EU relevance",t:"與 EU 無關"},{v:"unknown",t:"不確定",unk:1}],
+   when:a=>a["G0-Q02"]==="yes"||a["G0-Q02"]==="unknown"},
+ // G1 辨識與分類
+ {id:"G1-Q01",s:1,trig:"form of supply",type:"single",label:"標的物最接近哪一種供應形式？",
+   hint:"電池本身 vs 裝在成品裡，適用規則不同。",
+   opts:[{v:"Standalone batteries",t:"獨立電池"},{v:"Batteries incorporated into products",t:"裝在成品裡（筆電/手機等）"},{v:"Battery cells or battery modules made available for end use",t:"電芯／模組（供最終用途）"},{v:"unknown",t:"其他或不確定",unk:1}],
+   when:a=>!!a["G0-Q03"]},
+ {id:"G1-Q02",s:1,trig:"stationary BESS",type:"single",label:"標的是否為固定式儲能系統（stationary BESS）？",
+   hint:"固定式儲能要單獨判斷（影響儲能安全與 BMS）。",
+   opts:[{v:"yes",t:"是"},{v:"no",t:"否"},{v:"unknown",t:"不確定",unk:1}],when:a=>!!a["G1-Q01"]},
+ {id:"G1-Q03",s:1,trig:"categories of batteries",type:"single",label:"標的電池屬於哪一種電池類別？",
+   hint:"單選；決定後面哪些技術門檻會出現。",
+   opts:[{v:"portable battery",t:"攜帶式 Portable"},{v:"LMT battery",t:"LMT 輕型載具"},{v:"SLI battery",t:"SLI 啟動電池"},{v:"industrial battery",t:"工業 Industrial"},{v:"electric vehicle battery",t:"EV 電動車"},{v:"unknown",t:"不確定",unk:1}],
+   when:a=>!!a["G1-Q02"]},
+ // G2 生命階段
+ {id:"G2-Q01",s:2,trig:"battery life stage",type:"single",label:"電池目前的生命階段？",
+   hint:"全新與二手／廢棄適用義務不同。",
+   opts:[{v:"new",t:"全新 new"},{v:"used",t:"二手 used"},{v:"waste",t:"廢棄 waste"},{v:"fraction",t:"廢料 fraction"},{v:"unknown",t:"不確定",unk:1}],when:a=>!!a["G1-Q03"]},
+ {id:"G2-Q02",s:2,trig:"二次生命（context）",type:"multi",label:"二手／廢棄的來源或目前處理狀態？",
+   hint:"判斷 second-life；可複選。",
+   opts:[{v:"reuse route",t:"再使用"},{v:"repurposing route",t:"改作他用"},{v:"remanufacturing route",t:"再製造"},{v:"preparation for re-use",t:"再使用準備"},{v:"preparation for repurposing",t:"再用途化準備"},{v:"preparation for recycling",t:"回收準備"},{v:"sorting",t:"分選"},{v:"other",t:"其他"},{v:"unknown",t:"不確定",unk:1}],
+   when:a=>["used","waste","fraction"].includes(a["G2-Q01"])},
+ {id:"G2-Q03",s:2,trig:"重入市場（context）",type:"single",label:"是否預計重新進入市場或投入使用？",
+   hint:"影響狀態轉換與重入市場責任。",
+   opts:[{v:"yes",t:"是"},{v:"no",t:"否"},{v:"unknown",t:"不確定",unk:1}],when:a=>["used","waste"].includes(a["G2-Q01"])},
+ // G3 市場情境
+ {id:"G3-Q01",s:3,trig:"路徑（context）",type:"single",label:"你（或相關 EU entity）是直接 EU 市場行為，還是僅支援客戶資料要求？",
+   hint:"界定你是直接責任主體或支援角色。",
+   opts:[{v:"direct EU market route",t:"直接 EU 市場行為"},{v:"support-only customer request",t:"僅支援客戶要資料"},{v:"no route",t:"皆非"},{v:"unknown",t:"不確定",unk:1}],when:a=>!!a["G2-Q01"]},
+ {id:"G3-Q02",s:3,trig:"market deployment actions",type:"multi",label:"本案例涉及哪些 EU 市場行為？",
+   hint:"投放／提供／投入使用；可複選。",
+   opts:[{v:"placing on the market",t:"投放市場 placing"},{v:"making available on the market",t:"提供販售 making available"},{v:"putting into service",t:"投入使用 putting into service"},{v:"none of these",t:"皆無"},{v:"unknown",t:"不確定",unk:1}],when:a=>!!a["G3-Q01"]},
+ // G4 技術門檻
+ {id:"G4-Q01",s:4,trig:"industrial battery charge",type:"single",label:"工業電池是否為可充電？",
+   hint:"碳足跡／性能對工業電池常以可充電為前提。",
+   opts:[{v:"rechargeable",t:"可充電"},{v:"non-rechargeable",t:"不可充電"},{v:"unknown",t:"不確定",unk:1}],when:a=>a["G1-Q03"]==="industrial battery"},
+ {id:"G4-Q02",s:4,trig:"industrial battery capacity",type:"single",label:"工業電池容量是否大於 2 kWh？",
+   hint:"多個義務以 2 kWh 為門檻。只需級距。",
+   opts:[{v:"capacity greater than 2 kWh",t:"＞ 2 kWh"},{v:"capacity not greater than 2 kWh",t:"≤ 2 kWh"},{v:"unknown",t:"不確定",unk:1}],when:a=>a["G1-Q03"]==="industrial battery"},
+ {id:"G4-Q03",s:4,trig:"industrial battery external",type:"single",label:"工業電池是否屬於「僅外接儲存」exclusively external storage？",
+   hint:"影響再生含量判斷。",
+   opts:[{v:"with exclusively external storage",t:"是，僅外接儲存"},{v:"without exclusively external storage",t:"否"},{v:"unknown",t:"不確定",unk:1}],when:a=>a["G1-Q03"]==="industrial battery"},
+ {id:"G4-Q04",s:4,trig:"portable battery general",type:"single",label:"攜帶式電池是否為「一般用途」？",
+   hint:"用於性能與耐久度判斷。",
+   opts:[{v:"yes",t:"是"},{v:"no",t:"否"},{v:"unknown",t:"不確定",unk:1}],when:a=>a["G1-Q03"]==="portable battery"},
+ {id:"G4-Q05",s:4,trig:"button cell",type:"single",label:"攜帶式電池是否為鈕扣電池 button cell？",
+   hint:"button cell 會排除部分性能要求。",
+   opts:[{v:"yes",t:"是"},{v:"no",t:"否"},{v:"unknown",t:"不確定",unk:1}],when:a=>a["G1-Q03"]==="portable battery"},
+ {id:"G4-Q06",s:4,trig:"active materials",type:"multi",label:"電池活性材料是否含下列金屬？",
+   hint:"用於再生含量（LT07）；可複選。",
+   opts:[{v:"cobalt",t:"鈷 Co"},{v:"lead",t:"鉛 Pb"},{v:"lithium",t:"鋰 Li"},{v:"nickel",t:"鎳 Ni"},{v:"none of these",t:"皆無"},{v:"unknown",t:"不確定",unk:1}],
+   when:a=>["electric vehicle battery","SLI battery","LMT battery","industrial battery"].includes(a["G1-Q03"])},
+ {id:"G4-Q07",s:4,trig:"removability exempt",type:"single",label:"裝在成品裡的電池，是否符合「可不拆卸」豁免條件？",
+   hint:"防水/醫療/不可斷電等可豁免。",
+   opts:[{v:"yes",t:"符合豁免"},{v:"no",t:"不符合"},{v:"unknown",t:"不確定",unk:1}],
+   when:a=>a["G1-Q01"]==="Batteries incorporated into products"&&["portable battery","LMT battery"].includes(a["G1-Q03"])},
+ // G5 角色責任
+ {id:"G5-Q01",s:5,trig:"product supply chain actor",type:"single",label:"你（或相關 EU entity）最接近哪一種供應鏈角色？",
+   hint:"以本案例的 EU 市場/客戶情境回答。",
+   opts:[{v:"manufacturer",t:"製造商"},{v:"authorised representative",t:"授權代表"},{v:"importer",t:"進口商"},{v:"distributor",t:"經銷商"},{v:"fulfilment service provider",t:"履約服務商"},{v:"intermediary service provider under the e-commerce directive",t:"電商中介服務商"},{v:"end-user",t:"終端使用者"},{v:"support-only supplier",t:"純支援供應商"},{v:"unknown",t:"不確定",unk:1}],when:a=>!!a["G3-Q02"]},
+ {id:"G5-Q02",s:5,trig:"economic operator",type:"single",label:"本企業或相關 EU entity 是否為 economic operator？",
+   hint:"不熟悉這個詞可選不確定。",
+   opts:[{v:"yes",t:"是"},{v:"no",t:"否"},{v:"unknown",t:"不確定",unk:1}],when:a=>!!a["G5-Q01"]},
+ {id:"G5-Q03",s:5,trig:"suppliers of cells/modules",type:"single",label:"是否作為電芯／模組供應商，供應給電池製造商？",
+   hint:"供應鏈角色，與供應形式不同。",
+   opts:[{v:"yes",t:"是"},{v:"no",t:"否"},{v:"unknown",t:"不確定",unk:1}],when:a=>!!a["G5-Q02"]},
+ {id:"G5-Q04",s:5,trig:"Art.44（context）",type:"single",label:"身為進口商／經銷商，是否有自有品牌、改裝電池或改變用途？",
+   hint:"可能被視為製造商而承擔其責任。",
+   opts:[{v:"yes",t:"是"},{v:"no",t:"否"},{v:"not applicable",t:"不適用"},{v:"unknown",t:"不確定",unk:1}],when:a=>["importer","distributor"].includes(a["G5-Q01"])},
+ {id:"G5-Q05",s:5,trig:"producers",type:"single",label:"本企業或相關 EU entity 是否為 producer？",
+   hint:"EPR 生產者；含製造、進口、貼牌、電商。",
+   opts:[{v:"yes",t:"是"},{v:"no",t:"否"},{v:"unknown",t:"不確定",unk:1}],when:a=>!!a["G5-Q03"]},
+ {id:"G5-Q06",s:5,trig:"PRO appointed by producer",type:"single",label:"是否已指定生產者責任組織（PRO）代為履責？",
+   hint:"影響資訊揭露、收集目標、申報由誰處理。",
+   opts:[{v:"yes",t:"是"},{v:"no",t:"否"},{v:"unknown",t:"不確定",unk:1}],when:a=>["yes","unknown"].includes(a["G5-Q05"])},
+ {id:"G5-Q07",s:5,trig:"net turnover",type:"single",label:"企業淨營業額是否 ≥ €40M？",
+   hint:"盡職調查門檻。只需級距。",
+   opts:[{v:"less than EUR 40 million",t:"< €40M"},{v:"no less than EUR 40 million",t:"≥ €40M"},{v:"unknown",t:"不確定",unk:1}],when:a=>["yes","unknown"].includes(a["G5-Q02"])},
 ];
 
 const S={a:{},idx:0,skipped:new Set(),ended:null,hist:[],started:false};
@@ -200,39 +202,25 @@ function stageQs(s){ return QS.filter(q=>q.s===s && q.when(S.a)); }
 function stageApplicable(s){ return stageQs(s).length>0; }
 
 function optHTML(q){
-  if(q.type==="text"){
-    const val=S.a[q.id]?String(S.a[q.id]).replace(/"/g,'&quot;'):"";
-    return `<input type="text" value="${val}" oninput="setText('${q.id}',this.value)" placeholder="選填">`;
-  }
-  return `<div class="opts">`+q.opts.map(o=>{
-    let sel;
-    if(q.type==="multi") sel=(S.a[q.id]||[]).includes(o.v)?"sel":"";
-    else sel=S.a[q.id]===o.v?"sel":"";
-    const unk=o.unk?"unk":"";
-    const fn=q.type==="multi"?`toggle('${q.id}','${o.v}')`:`pick('${q.id}','${o.v}')`;
-    return `<div class="opt ${sel} ${unk}" onclick="${fn}">${o.t}</div>`;
-  }).join("")+`</div>`;
+  if(q.type==="text"){ var val=S.a[q.id]?String(S.a[q.id]).replace(/"/g,'&quot;'):""; return '<input type="text" value="'+val+'" oninput="setText(\''+q.id+'\',this.value)" placeholder="選填">'; }
+  return '<div class="opts">'+q.opts.map(function(o){
+    var sel = q.type==="multi" ? ((S.a[q.id]||[]).includes(o.v)?"sel":"") : (S.a[q.id]===o.v?"sel":"");
+    var unk=o.unk?"unk":""; var fn=q.type==="multi"?"toggle('"+q.id+"','"+o.v+"')":"pick('"+q.id+"','"+o.v+"')";
+    return '<div class="opt '+sel+' '+unk+'" onclick="'+fn+'">'+o.t+'</div>';
+  }).join("")+'</div>';
 }
 function qHTML(q){
-  const multi=q.type==="multi"?`<span class="multi-tag">可複選</span>`:"";
-  return `<div class="q"><div class="qid">${q.id} · ${q.trig}</div>
-    <div class="q-label">${q.label}${multi}</div>
-    <span class="q-hint">${q.hint}</span>${optHTML(q)}</div>`;
+  var multi=q.type==="multi"?'<span class="multi-tag">可複選</span>':"";
+  return '<div class="q"><div class="qid">'+q.id+' · '+q.trig+'</div><div class="q-label">'+q.label+multi+'</div><span class="q-hint">'+q.hint+'</span>'+optHTML(q)+'</div>';
 }
-
-function canNext(){
-  return stageQs(S.idx).every(q=>{
-    if(q.type==="text") return true;
-    if(q.type==="multi") return (S.a[q.id]||[]).length>0;
-    return !!S.a[q.id];
-  });
-}
-function outOfScope(){ const c=S.a["Q-S1-001"]; return Array.isArray(c)&&c.length===1&&c[0]==="none"; }
-
+function canNext(){ return stageQs(S.idx).every(function(q){ if(q.type==="text")return true; if(q.type==="multi")return (S.a[q.id]||[]).length>0; return !!S.a[q.id]; }); }
+function outOfScope(){ return S.a["G0-Q02"]==="no"; }
+function jumpTo(i){ if(i===S.idx&&!S.ended)return; if(!S.ended)S.hist.push(S.idx); S.ended=null; S.idx=i; render(); }
+function stageComplete(i){ var qs=stageQs(i); if(!qs.length)return false; return qs.every(function(q){ if(q.type==="text")return true; if(q.type==="multi")return (S.a[q.id]||[]).length>0; return !!S.a[q.id]; }); }
 function next(){
   if(S.idx===0 && outOfScope()){ S.ended="out"; return render(); }
-  [...S.skipped].forEach(x=>{ if(x>S.idx) S.skipped.delete(x); });
-  let j=S.idx+1;
+  [...S.skipped].forEach(function(x){ if(x>S.idx)S.skipped.delete(x); });
+  var j=S.idx+1;
   while(j<6 && !stageApplicable(j)){ S.skipped.add(j); j++; }
   if(j>=6){ return finish(); }
   S.hist.push(S.idx); S.idx=j; render();
@@ -240,188 +228,100 @@ function next(){
 function back(){ if(S.ended){S.ended=null;return render();} if(S.hist.length){S.idx=S.hist.pop();render();} }
 function restart(){ S.a={};S.idx=0;S.skipped=new Set();S.ended=null;S.hist=[];S.serverResults=null;render(); }
 
-/* 點上方流程條自由跳階段 */
-function jumpTo(i){
-  if(i===S.idx && !S.ended) return;
-  if(!S.ended) S.hist.push(S.idx);
-  S.ended=null; S.idx=i; render();
-}
-function stageComplete(i){
-  const qs=stageQs(i); if(qs.length===0) return false;
-  return qs.every(q=>{
-    if(q.type==="text") return true;
-    if(q.type==="multi") return (S.a[q.id]||[]).length>0;
-    return !!S.a[q.id];
-  });
-}
 function progressHTML(){
-  const bar=`<div class="progress">`+STAGES.map((st,i)=>{
-    let cls,label=st.n;
-    if(!stageApplicable(i)){ cls="skipped"; label=st.n+"·不適用"; }
-    else if(i===S.idx && !S.ended){ cls="current"; }
-    else if(stageComplete(i)){ cls="done"; }
-    else { cls="upcoming"; }
-    return `<div class="pstep ${cls}" onclick="jumpTo(${i})"><div class="pbar"></div>${label}</div>`;
-  }).join("")+`</div>`;
-  return bar+`<div class="phint">↑ 可點上方階段自由切換（綠＝已填、灰斜線＝目前不適用）</div>`;
+  var bar='<div class="progress">'+STAGES.map(function(st,i){
+    var cls,label=st.n;
+    if(!stageApplicable(i)){cls="skipped";label=st.n+"·略過";}
+    else if(i===S.idx&&!S.ended)cls="current";
+    else if(stageComplete(i))cls="done"; else cls="upcoming";
+    return '<div class="pstep '+cls+'" onclick="jumpTo('+i+')"><div class="pbar"></div>'+label+'</div>';
+  }).join("")+'</div>';
+  return bar+'<div class="phint">↑ 可點階段自由切換（綠＝已填、灰斜線＝目前不適用）</div>';
 }
 
-function countAnswered(){
-  return QS.filter(q=>q.when(S.a) && q.type!=="text").length;
-}
-const LTS=[{"id": "LT03", "name": "Actor & Responsibility Position｜責任與支援位置", "art": "Articles 38、39、40、41、42、43、44、46", "desc": "判斷企業是否屬於電池法下的責任主體或支援主體", "resp": "主要責任： 要負起「提供並保留長達10年的供應鏈上下游追溯資訊 」的共同義務。 延伸說明： 依據Economic Operator類別不同（製造商、電池芯與電池模組供應商、授權代表、進口商、經銷商、履行服務提供商、執行電池準備再利用、準備改變用途、改變用途或再製造的經濟營運商、以自己名義或商標上市、修改電池或改變電池用途而須承擔製造商義務的進口商或經銷商），還需額外負擔「提供上下游及執法機關相關文件、確保產品合規、資訊和是、維護儲存運輸", "cond": "economic operator = yes OR suppliers of battery cells and battery module = yes", "pri": ["economic operator", "suppliers of battery cells and battery module"], "sec": []}, {"id": "LT04", "name": "Restricted Substances｜限制物質", "art": "Article 6、Annex I、Article 1(3)–(4) as scope reference", "desc": "判斷電池或含電池產品是否進入限制物質要求", "resp": "主要責任： 不得含有 (EC) No 1907/2006 條例附件 XVII、2000/53/EC 指令第 4(2)(a) 條，以及本法規附件一（Annex I）中所明列限制的有害物質。 延伸說明： 豁免條件：附件一豁免條款、科學研究與開發、產品與製程導向之研發用途。 需依據Article 17及Annex VIII，完成合規評估（Conformity assessment）。", "cond": "categories of batteries IN [portable battery, LMT battery, SLI battery, industrial battery, electric vehicle battery] AND form of supply IN [Standalone batteries, Batteries incorporated into products, Battery cells or battery modules made available for end use]", "pri": ["categories of batteries", "form of supply"], "sec": []}, {"id": "LT05", "name": "Carbon Footprint｜碳足跡", "art": "Article 7、Annex II", "desc": "判斷是否啟動碳足跡揭露、標示與上限要求", "resp": "主要責任： 需繳交碳足跡證明文件、標示效能等級標籤、且生命週期碳足跡低於歐盟規定上限。 延伸說明： 繳交的內容與日期需遵守Article 7、Annex II規定，執委會將於後續宣布碳足跡生命週期上限。 排除 Article 7(5) 所稱已經上市或投入使用後，再經 preparation for re-use、preparation for repurposing、repurposing 或 remanufacturing 的電池", "cond": "battery life stage = new AND ((categories of batteries = electric vehicle battery) OR (categories of batteries = LMT battery) OR (categories of batteries = industrial battery AND industrial battery charge = rechargeable AND industrial battery capacity = capacity greater than 2 kWh))", "pri": ["battery life stage", "categories of batteries"], "sec": ["industrial battery charge", "industrial battery capacity"]}, {"id": "LT07", "name": "Recycled Content｜再生含量", "art": "Article 8", "desc": "判斷是否啟動活性材料再生含量揭露與最低比例要求", "resp": "主要責任： 需檢附文件說明活性材料中回收自廢棄物的鈷、鋰、鎳、鉛的比例，並遵守Article 8所規範的最低回收比例要求及達標時間。", "cond": "battery life stage = new AND active materials IN [cobalt, lead, lithium, nickel] AND ((categories of batteries = electric vehicle battery) OR (categories of batteries = SLI battery) OR (categories of batteries = LMT battery) OR (categories of batteries = industrial battery AND industrial battery capacity = capacity greater than 2 kWh AND industrial battery external = without exclusively external storage))", "pri": ["battery life stage", "categories of batteries", "active materials"], "sec": ["industrial battery capacity", "industrial battery external"]}, {"id": "LT09", "name": "Performance & Durability｜性能與耐久度", "art": "Articles 9、10、Annex III、Annex IV", "desc": "判斷是否啟動電池性能與耐久度要求", "resp": "主要責任： 電池效能與耐久度需達到標準，並提供說明文件。 延伸說明： 效能與耐久度標準、文件格式、達標時間需參考Annex III、Annex IV、以及執委會後續公布之相關規範。 需依據Article 17及Annex VIII，完成合規評估（Conformity assessment）。", "cond": "battery life stage = new AND ((categories of batteries = portable battery AND portable battery general = yes AND button cell = no) OR (categories of batteries = industrial battery AND industrial battery charge = rechargeable AND industrial battery capacity = capacity greater than 2 kWh) OR categories of batteries = LMT battery OR categories of batteries = electric vehicle battery)", "pri": ["battery life stage", "categories of batteries"], "sec": ["portable battery general", "button cell", "industrial battery charge", "industrial battery capacity"]}, {"id": "LT10", "name": "Stationary BESS Safety｜固定式儲能安全", "art": "Article 12、Annex V", "desc": "判斷固定式儲能系統是否啟動安全要求", "resp": "主要責任： 需於正常操作與使用情況下確保其安全性、通過Annex V的安全係數測試、針對未包含Annex V的風險進行額外說明，標註風險處理方式、並在電池進入再利用、改變用途及再製造時更新文件。 延伸說明： 需依據Article 17及Annex VIII，完成合規評估（Conformity assessment）。", "cond": "stationary battery energy storage systems = yes AND market deployment actions IN [placing on the market, putting into service]", "pri": ["stationary battery energy storage systems", "market deployment actions"], "sec": []}, {"id": "LT11", "name": "Removability / Replaceability｜可拆卸與可更換", "art": "Article 11", "desc": "判斷含電池產品是否啟動可拆卸與可更換要求", "resp": "主要責任： 需確保電池能被拆卸與替換、提供備用零件、並禁止以軟體方式阻止更換。並遵守Article 11 的詳細拆卸替換規範及豁免條款。", "cond": "form of supply = Batteries incorporated into products AND categories of batteries IN [portable battery, LMT battery] AND market deployment actions = placing on the market AND removability and replaceability exempt = no", "pri": ["form of supply", "categories of batteries", "market deployment actions"], "sec": ["removability and replaceability exempt"]}, {"id": "LT12", "name": "Labelling / QR / Conformity / CE｜標示、QR、符合性與 CE", "art": "Articles 13、18、19、20 角色責任連動 Articles 38、41、42、43、44", "desc": "判斷是否啟動標示、QR、符合性聲明與 CE 要求", "resp": "主要責任： 依角色不同，需負責標註標籤、檢查標籤或確保標籤完整。 延伸說明： 需於電池上（或包裝/隨附文件上）標籤說明「一般資訊」、「效能資訊」、「回收標誌（含超標之 Cd/Pb 化學符號）」及「QR code」、標注 CE 標誌（視情況附加風險圖案），並依 Annex VIII 及 Annex IX 完成「歐盟符合性聲明」並翻譯為當地語言。 具體標註內容、CE 識別碼，請參考 ANNEX VI、Regulation (EC) No 7", "cond": "categories of batteries IN [portable battery, LMT battery, SLI battery, industrial battery, electric vehicle battery]", "pri": ["categories of batteries"], "sec": []}, {"id": "LT14", "name": "BMS / SoH / Expected Lifetime｜BMS／健康狀態／預期壽命", "art": "Article 14、Annex VII", "desc": "判斷是否啟動 BMS、健康狀態與預期壽命資訊要求", "resp": "主要責任： 需以BMS提供電池「健康狀態」與「預期壽命」，且BMS需提供無歧視的「唯讀」存取權限，並內建「軟體重置功能」供電池行再利用或改變用途等作業使用。 延伸說明： BMS提供資訊的方式，需遵守ANNEX VII的規定。 「軟體重置功能」使用後，電池製造商對於因後續上傳之軟體所導致的安全或功能損害，將不再承擔責任。 需依據Article 17及Annex VIII，完成合規評估（Conformity assessment）。", "cond": "stationary battery energy storage systems = yes OR categories of batteries IN [LMT battery, electric vehicle battery]", "pri": ["stationary battery energy storage systems", "categories of batteries"], "sec": []}, {"id": "LT15", "name": "Battery Passport / DPP｜電池護照", "art": "Article 77、Annex XIII；Article 13(6) 作 access route", "desc": "判斷是否啟動 Battery Passport / DPP 要求", "resp": "主要責任： 需具備電池護照。 延伸說明： 依據身份與行為不同（市場行為「投入市場或投入使用」的economic operator，以及後續接手電池的producer、the producer responsibility organisation、waste management operator、電池回收後重新投入市場的economic operator。），而有不同的責任義務。 需依照Article 77、Article78、Ann", "cond": "(categories of batteries = LMT battery OR categories of batteries = electric vehicle battery OR (categories of batteries = industrial battery AND industrial battery capacity = capacity greater than 2 kWh)) AND market deployment actions IN [placing on the market, putting into service]", "pri": ["categories of batteries", "market deployment actions"], "sec": ["industrial battery capacity"]}, {"id": "LT17", "name": "Waste Battery Information / Prevention & Management｜廢電池預防與管理資訊揭露", "art": "Article 74", "desc": "判斷 producer、PRO 或供應鏈角色是否需提供廢電池預防與管理資訊", "resp": "主要責任： 需提供經銷商、廢棄物管理營運商、終端消費者關於廢電池儲存、拆解、回收的相關資訊。 延伸說明： 包含一般預防與管理、儲存與收集安全、專業拆解與處理技術、收集與處理成本、宣導與誘因、免費回收管道、線上交易平台等資訊。揭露方式需符合歐盟規範的商業機密保護保護規範，並於實體店面對終端消費者揭露。", "cond": "producers = yes OR PRO appointed by producer = yes OR product supply chain actor = distributor", "pri": ["producers", "PRO appointed by producer", "product supply chain actor"], "sec": []}, {"id": "LT18-1", "name": "EPR Governance & Producer Responsibility｜EPR 治理與 Producer 責任", "art": "Articles 55–58", "desc": "判斷 producer 是否啟動 EPR 登記、治理與責任安排", "resp": "主要責任： 必須在該會員國完成 producer registration，取得 registration number，承擔該電池於廢棄階段的 extended producer responsibility，並透過自行履責或委託經授權的 producer responsibility organisation，建立可覆蓋該會員國市場的廢電池收集、運輸、處理、資訊提供、資料申報、成本分攤、持續自我查核及財務保證安排，以證明其 EPR ", "cond": "(producers = yes AND market deployment actions = making available on the market) OR (economic operator = yes AND battery life stage = used AND market deployment actions = making available on the market)", "pri": ["producers", "market deployment actions"], "sec": ["battery life stage", "economic operator"]}, {"id": "LT18-2D", "name": "Waste Battery Take-back & Collection System｜廢棄狀態電池收回與收集系統", "art": "Articles 59-65 (不含63)、Annex XI", "desc": "判斷 producer 或供應鏈角色是否啟動廢電池收回與收集系統責任", "resp": "主要責任 業者需依其身份、電池類別與銷售／供應情境，處理廢電池之收集、免費交回、回收系統安排、交付處理及必要資訊／查核責任。", "cond": "categories of batteries IN [portable battery, LMT battery, SLI battery, industrial battery, electric vehicle battery] AND ((producers = yes AND market deployment actions = making available on the market) OR product supply chain actor = distributor)", "pri": ["categories of batteries", "producers", "product supply chain actor", "market deployment actions"], "sec": ["form of supply"]}, {"id": "LT18-3D", "name": "Waste Portable / LMT Battery Collection Handover & Corrective Oversight｜廢棄狀態 Portable／LMT 電池收集交付與矯正監督", "art": "Articles 66–69、Annex XI", "desc": "判斷 portable / LMT battery producer 或 PRO 是否啟動收集績效、交付與矯正監督責任", "resp": "", "cond": "categories of batteries IN [portable battery, LMT battery] AND market deployment actions = making available on the market AND (producers = yes OR PRO appointed by producer = yes)", "pri": ["categories of batteries", "market deployment actions", "producers", "PRO appointed by producer"], "sec": []}, {"id": "LT18-5", "name": "Battery Status Transition & Market Re-entry｜使用後／廢棄來源電池之狀態轉換與重入市場責任", "art": "Article 73、Article 45", "desc": "判斷 used / waste battery 是否進入狀態轉換與重入市場責任提醒", "resp": "主要責任： 當案例涉及 used battery 或 waste battery，企業應注意該電池是否經 preparation for re-use、preparation for repurposing、repurposing 或 remanufacturing 後，重新 placed on the market 或 put into service。若涉及 waste LMT battery、waste industrial ba", "cond": "battery life stage IN [used, waste]", "pri": ["battery life stage"], "sec": []}, {"id": "LT18-6", "name": "Waste Battery Reporting & Data Submission｜廢電池申報與資料提交", "art": "Articles 75", "desc": "判斷 producer 或 PRO 是否啟動廢電池申報與資料提交責任", "resp": "主要責任： 根據角色與電池種類不同，需要對個會員國指定的主管機關（competent authority）關於廢電池的各項數據。 延伸說明： 包含各種電池投入市場、收集、回收處理、再利用/改變用途、運送至其他國家、回收效率 (recycling efficiency)、材料回收率 (recovery of materials)等數據。 需於數據收集年度結束後的 6 個月內完成申報。 實際執行方式由各會員國主管機關自訂。", "cond": "categories of batteries IN [portable battery, LMT battery, SLI battery, industrial battery, electric vehicle battery] AND (producers = yes OR PRO appointed by producer = yes)", "pri": ["categories of batteries", "producers", "PRO appointed by producer"], "sec": []}, {"id": "LT19", "name": "Due Diligence / Traceability｜供應鏈盡職調查與追溯", "art": "Articles 47-53、Annex X", "desc": "判斷是否啟動供應鏈盡職調查與追溯責任", "resp": "主要責任： 需建立盡職調查機制，包含盡職調查政策建立、調查、風險管理、資訊揭露、保存資訊十年供查驗，並定期由第三方機構查核。 延伸說明： 盡職調查的範圍需依據Annex X。 企業也可依據Article 53，參加會員國政府依歐盟規定辦理的盡職調查計畫。 需同時遵守歐盟法律中關於源自衝突影響及高風險地區之礦物與金屬的盡職調查義務（due diligence obligations）之規定。", "cond": "economic operator = yes AND net turnover = no less than EUR 40 million AND market deployment actions IN [placing on the market, putting into service] AND battery life stage = new", "pri": ["economic operator", "market deployment actions", "battery life stage"], "sec": ["net turnover"]}];
-const TRIGGERS=["economic operator","product supply chain actor","suppliers of battery cells and battery module","categories of batteries","form of supply","industrial battery charge","industrial battery capacity","industrial battery external","active materials","portable battery general","button cell","stationary battery energy storage systems","market deployment actions","removability and replaceability exempt","producers","PRO appointed by producer","net turnover","battery life stage"];
-const DIRECT={"Q-S1-001":"categories of batteries","Q-S1-002":"form of supply","Q-S1-003":"stationary battery energy storage systems","Q-S1-004":"battery life stage","Q-S1-007":"market deployment actions","Q-S1-008":"product supply chain actor","Q-S1-010":"suppliers of battery cells and battery module","Q-S1-012":"portable battery general","Q-S1-013":"button cell","Q-S1-014":"industrial battery charge","Q-S1-015":"industrial battery capacity","Q-S1-016":"industrial battery external","Q-S1-017":"active materials","Q-S1-018":"removability and replaceability exempt","Q-S1-020":"PRO appointed by producer","Q-S1-021":"net turnover"};
-const VMAP={
- "categories of batteries":{portable:"portable battery",lmt:"LMT battery",sli:"SLI battery",ev:"electric vehicle battery",industrial:"industrial battery"},
- "form of supply":{standalone:"Standalone batteries",incorporated:"Batteries incorporated into products",cellmodule:"Battery cells or battery modules made available for end use"},
- "market deployment actions":{placing:"placing on the market",available:"making available on the market",service:"putting into service"},
- "product supply chain actor":{manufacturer:"manufacturer",importer:"importer",distributor:"distributor",authrep:"authorised representative",fulfilment:"fulfilment service provider"},
- "industrial battery charge":{rechargeable:"rechargeable",non:"non-rechargeable"},
- "industrial battery capacity":{gt2:"capacity greater than 2 kWh",le2:"capacity less than or equal to 2 kWh"},
- "industrial battery external":{"with":"with exclusively external storage","without":"without exclusively external storage"},
- "net turnover":{lt40:"less than EUR 40 million",ge40:"no less than EUR 40 million"}
-};
-function deriveYesNo(direct,infer,bases){var sub=Array.isArray(infer)&&infer.some(function(x){return bases.indexOf(x)>-1;});
- if(direct==='yes'||sub)return{known:true,values:['yes']}; if(direct==='no'&&!sub)return{known:true,values:['no']}; return{known:false,values:[]};}
-function qApplicable(qid,a){var q=QS.filter(function(x){return x.id===qid;})[0];return q?!!q.when(a):true;}
-function deriveTriggers(a){var t={};TRIGGERS.forEach(function(n){t[n]={known:false,values:[]};});
- Object.keys(DIRECT).forEach(function(qid){var name=DIRECT[qid],ans=a[qid];
-  if(!qApplicable(qid,a)){t[name]={known:true,values:[]};return;}            /* 因不適用被跳過 → 定義為否(known,空值) */
-  if(ans==null||ans===''||ans==='unknown'||(Array.isArray(ans)&&ans.length===0)||(Array.isArray(ans)&&ans.length===1&&ans[0]==='unknown')){
-   t[name]={known:false,values:[]};return;}                                   /* 適用但填不確定/未答 → unknown */
-  var arr=Array.isArray(ans)?ans:[ans],vals=[];
-  arr.forEach(function(code){if(code==='unknown'||code==='none')return;var m=(VMAP[name]&&VMAP[name][code]!==undefined)?VMAP[name][code]:code;vals.push(m);});
-  t[name]={known:true,values:vals};});                                        /* 含「皆無/none」也算已知(空值=否) */
- t["economic operator"]=deriveYesNo(a["Q-S1-009A"],a["Q-S1-009B"],["manufacturer","importer","distributor","authrep"]);
- t["producers"]=deriveYesNo(a["Q-S1-019A"],a["Q-S1-019B"],["ownname","resell","import"]);return t;}
-function evalAtom(atom,trig){atom=atom.trim();var name,vals;
- if(atom.indexOf(' IN ')>-1){var p=atom.split(' IN ');name=p[0].trim();vals=p[1].trim().replace(/^\[|\]$/g,'').split(',').map(function(s){return s.trim();});}
- else{var q=atom.split(' = ');name=q[0].trim();vals=[q[1].trim()];}
- var tv=trig[name];if(!tv||tv.known===false)return'U';for(var i=0;i<vals.length;i++)if(tv.values.indexOf(vals[i])>-1)return'T';return'F';}
-function and3(a,b){return(a==='F'||b==='F')?'F':((a==='U'||b==='U')?'U':'T');}
-function or3(a,b){return(a==='T'||b==='T')?'T':((a==='U'||b==='U')?'U':'F');}
-function evalCond(cond,trig){var toks=cond.split(/(\bAND\b|\bOR\b|\(|\))/).map(function(t){return t.trim();}).filter(String);var pos=0;
- function expr(){var v=term();while(toks[pos]==='OR'){pos++;v=or3(v,term());}return v;}
- function term(){var v=factor();while(toks[pos]==='AND'){pos++;v=and3(v,factor());}return v;}
- function factor(){if(toks[pos]==='('){pos++;var v=expr();pos++;return v;}return evalAtom(toks[pos++],trig);}
- return expr();}
-function trueAtoms(cond,trig){return cond.split(/(\bAND\b|\bOR\b|\(|\))/).map(function(t){return t.trim();})
- .filter(function(t){return t&&t!=='AND'&&t!=='OR'&&t!=='('&&t!==')';}).filter(function(at){return evalAtom(at,trig)==='T';});}
-function knownT(trig,n){return trig[n]&&trig[n].known;}
-function classify(lt,trig){var res=evalCond(lt.cond,trig);
- if(res==='T')return{tag:'confirmed'}; if(res==='F')return{tag:'no'};
- var priKnown=lt.pri.length>0&&lt.pri.every(function(t){return knownT(trig,t);});
- var secKnown=lt.sec.length>0&&lt.sec.some(function(t){return knownT(trig,t);});
- var missSec=lt.sec.filter(function(t){return !knownT(trig,t);});
- var missPri=lt.pri.filter(function(t){return !knownT(trig,t);});
- if(priKnown)return{tag:'needs',refine:missSec};
- if(!priKnown&&!secKnown)return{tag:'cannot',missing:lt.pri.concat(lt.sec)};
- return{tag:'cannot',missing:missPri};}
-function ltCard(lt,c,zone,trig){var trigs=lt.pri.concat(lt.sec).join('、');
- var why=zone==='confirmed'?'<div class="why2">為何命中：'+(trueAtoms(lt.cond,trig).join('；')||'—')+'</div>':'';
- var note='';
- if(zone==='needs')note='<div class="note2">補充以下次要資料可更準確：'+((c.refine||[]).join('、')||'—')+'</div>';
- if(zone==='cannot')note='<div class="note2">缺少判斷依據：'+((c.missing||[]).join('、')||'—')+'</div>';
- return '<div class="lt '+zone+'"><div class="lt-h"><b>'+lt.id+'</b> '+lt.name+'</div>'+
-  '<div class="lt-art">'+lt.art+'</div><div class="lt-desc">'+lt.desc+'</div>'+
-  (lt.resp?'<div class="lt-resp">'+lt.resp+'</div>':'')+why+note+
-  '<div class="lt-trig">依據 trigger：'+trigs+'</div></div>';}
-function demoEmail(){var ok=document.getElementById('consent').checked;var em=document.getElementById('emailbox').value.trim();
- if(!ok){alert('請先勾選同意資料處理方式');return;}
- if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(em)){alert('請輸入有效 email');return;}
- document.getElementById('emailstep').innerHTML='<div class="emaildone">✓ （Demo）結果已寄至 '+em+'，並寫入 log。正式版由 Apps Script 寄送。</div>';}
-const GAS_URL='https://script.google.com/a/macros/renato-lab.com/s/AKfycbzuDMdMDPTya5ksi7dqjBxsZI3pASMfY1FaddiomB2gK8QircclpN1uB3b15YPz93Y_sw/exec';
-const GAS_TOKEN='2026_eu_battery_regulation_v1';
-function collectApplicable(){var m={};QS.forEach(function(q){m[q.id]=!!q.when(S.a);});return m;}
+/* ====== 送 Apps Script 算 ====== */
+function collectApplicable(){ var m={}; QS.forEach(function(q){ m[q.id]=!!q.when(S.a); }); return m; }
 function finish(){
- document.getElementById('app').innerHTML=progressHTML()+'<div class="card"><div class="end"><div class="icon">⏳</div><h2>計算中…</h2><p>正在送出作答並比對 Legal Theme，請稍候。</p></div></div>';
- window.scrollTo(0,0);
- fetch(GAS_URL,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},
-   body:JSON.stringify({token:GAS_TOKEN,caseName:S.a['Q-S1-000']||'',answers:S.a,applicable:collectApplicable()})})
-  .then(function(r){return r.json();})
-  .then(function(data){if(data.error)throw new Error(data.error);S.serverResults=data.results;S.resultId=data.resultId;S.ended='complete';render();})
-  .catch(function(err){S.fetchError=String(err);S.ended='error';render();});
+  document.getElementById('app').innerHTML=progressHTML()+'<div class="card"><div class="end"><div class="icon">⏳</div><h2>計算中…</h2><p>正在送出作答並比對 Legal Theme，請稍候。</p></div></div>';
+  window.scrollTo(0,0);
+  fetch(GAS_URL,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},
+    body:JSON.stringify({token:GAS_TOKEN,caseName:S.a['G0-Q01']||'',answers:S.a,applicable:collectApplicable()})})
+   .then(function(r){return r.json();})
+   .then(function(data){if(data.error)throw new Error(data.error);S.serverResults=data.results;S.resultId=data.resultId;S.ended='complete';render();})
+   .catch(function(err){S.fetchError=String(err);S.ended='error';render();});
 }
 function realEmail(){
- var ok=document.getElementById('consent').checked;var em=document.getElementById('emailbox').value.trim();
- if(!ok){alert('請先勾選同意資料處理方式');return;}
- if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(em)){alert('請輸入有效 email');return;}
- document.getElementById('emailstep').innerHTML='<div class="emaildone">寄送中…</div>';
- var summary=(S.serverResults&&S.serverResults.confirmed?S.serverResults.confirmed.map(function(x){return x.id;}).join(', '):'');
- fetch(GAS_URL,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},
-   body:JSON.stringify({token:GAS_TOKEN,action:'email',email:em,resultId:S.resultId,summary:'確定適用：'+summary})})
-  .then(function(){document.getElementById('emailstep').innerHTML='<div class="emaildone">✓ 已寄至 '+em+'，並記錄於 log。</div>';})
-  .catch(function(){document.getElementById('emailstep').innerHTML='<div class="emaildone" style="color:#c0392b">寄送失敗，請稍後再試。</div>';});
+  var ok=document.getElementById('consent').checked;var em=document.getElementById('emailbox').value.trim();
+  if(!ok){alert('請先勾選同意資料處理方式');return;}
+  if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(em)){alert('請輸入有效 email');return;}
+  document.getElementById('emailstep').innerHTML='<div class="emaildone">寄送中…</div>';
+  var summary=(S.serverResults&&S.serverResults.confirmed?S.serverResults.confirmed.map(function(x){return x.id;}).join(', '):'');
+  fetch(GAS_URL,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},
+    body:JSON.stringify({token:GAS_TOKEN,action:'email',email:em,resultId:S.resultId,summary:'確定適用：'+summary})})
+   .then(function(){document.getElementById('emailstep').innerHTML='<div class="emaildone">✓ 已寄至 '+em+'，並記錄於 log。</div>';})
+   .catch(function(){document.getElementById('emailstep').innerHTML='<div class="emaildone" style="color:#c0392b">寄送失敗，請稍後再試。</div>';});
 }
 function srvCard(o,zone){
- var trigs=(o.triggers||[]).join('、');
- var why=zone==='confirmed'?'<div class="why2">為何命中：'+((o.why||[]).join('；')||'—')+'</div>':'';
- var note='';
- if(zone==='needs')note='<div class="note2">補充以下次要資料可更準確：'+((o.refine||[]).join('、')||'—')+'</div>';
- if(zone==='cannot')note='<div class="note2">缺少判斷依據：'+((o.missing||[]).join('、')||'—')+'</div>';
- return '<div class="lt '+zone+'"><div class="lt-h"><b>'+o.id+'</b> '+o.name+'</div>'+
-  '<div class="lt-art">'+(o.articles||'')+'</div><div class="lt-desc">'+(o.desc||'')+'</div>'+
-  (o.responsibilities?'<div class="lt-resp">'+o.responsibilities+'</div>':'')+why+note+
-  (trigs?'<div class="lt-trig">依據 trigger：'+trigs+'</div>':'')+'</div>';
+  var trigs=(o.triggers||[]).join('、');
+  var why=zone==='confirmed'?'<div class="why2">為何命中：'+((o.why||[]).join('；')||'—')+'</div>':'';
+  var note='';
+  if(zone==='needs')note='<div class="note2">補充以下次要資料可更準確：'+((o.refine||[]).join('、')||'—')+'</div>';
+  if(zone==='cannot')note='<div class="note2">缺少判斷依據：'+((o.missing||[]).join('、')||'—')+'</div>';
+  return '<div class="lt '+zone+'"><div class="lt-h"><b>'+o.id+'</b> '+o.name+'</div>'+
+   '<div class="lt-art">'+(o.articles||'')+'</div><div class="lt-desc">'+(o.desc||'')+'</div>'+
+   (o.responsibilities?'<div class="lt-resp">'+o.responsibilities+'</div>':'')+why+note+
+   (trigs?'<div class="lt-trig">依據 trigger：'+trigs+'</div>':'')+'</div>';
 }
 function endHTML(){
- if(S.ended==="out") return '<div class="card"><div class="end"><div class="icon">✓</div>'+
-   '<h2>不在歐盟電池法範圍</h2><p>你的案例既不是電池、也沒有含電池，不需要進一步準備。</p>'+
-   '<button class="btn btn-ghost" onclick="back()">← 改上一題</button>'+
-   '<button class="btn btn-primary" onclick="restart()">重新診斷</button></div></div>';
- if(S.ended==="error") return '<div class="card"><div class="end"><div class="icon">⚠️</div>'+
-   '<h2>連線發生問題</h2><p>無法取得結果（'+(S.fetchError||'')+'）。請檢查網路或 Apps Script 部署存取權後重試。</p>'+
-   '<button class="btn btn-primary" onclick="finish()">重新送出</button></div></div>';
- var R=S.serverResults||{confirmed:[],needsMoreData:[],cannotDetermine:[]};
- function zone(title,arr,cls,zk){if(!arr||!arr.length)return'';
-   return '<div class="zone"><div class="zone-h '+cls+'">'+title+'（'+arr.length+'）</div>'+
-     arr.map(function(o){return srvCard(o,zk);}).join('')+'</div>';}
- var body=zone('確定適用',R.confirmed,'zc','confirmed')+zone('適用 — 建議補充資料',R.needsMoreData,'zn','needs')+zone('無法判斷（資料不足）',R.cannotDetermine,'zx','cannot');
- var emailHtml='<div class="card" id="emailstep"><div class="email-h">把結果寄一份備份給自己</div>'+
-   '<input id="emailbox" type="email" placeholder="you@company.com">'+
-   '<label class="consent"><input type="checkbox" id="consent"> 我已閱讀並同意下述資料處理方式</label>'+
-   '<div class="privacy2">為寄送結果並保留紀錄，我們會儲存你的作答內容、系統算出的判斷結果與此 email，'+
-   '存放於受存取控制的雲端試算表，<b>保留 12 個月後自動刪除</b>；你可隨時來信要求提前刪除。本工具僅供初步自評，不構成法律意見。</div>'+
-   '<button class="btn btn-primary" onclick="realEmail()">寄送結果備份</button></div>';
- var n=(R.confirmed||[]).length,m=(R.needsMoreData||[]).length,k=(R.cannotDetermine||[]).length;
- return '<div class="card"><div class="end" style="padding-bottom:6px"><div class="icon">📋</div>'+
-   '<h2>初步合規診斷結果</h2>'+
-   '<span class="count">確定適用 '+n+'｜建議補充 '+m+'｜無法判斷 '+k+'</span>'+
-   '<p>以下為依你的作答比對 Legal Theme 的結果。</p></div>'+body+'</div>'+emailHtml+
-   '<div class="actions disclaimer-screen" style="margin-top:4px"><button class="btn btn-ghost" onclick="restart()">↺ 再診斷另一顆電池</button></div>';
+  if(S.ended==="out") return '<div class="card"><div class="end"><div class="icon">✓</div>'+
+    '<h2>不在歐盟電池法範圍</h2><p>依你的回答，本案例與電池法無關，不需要進一步診斷。</p>'+
+    '<button class="btn btn-ghost" onclick="back()">← 改上一題</button>'+
+    '<button class="btn btn-primary" onclick="restart()">重新診斷</button></div></div>';
+  if(S.ended==="error") return '<div class="card"><div class="end"><div class="icon">⚠️</div>'+
+    '<h2>連線發生問題</h2><p>無法取得結果（'+(S.fetchError||'')+'）。請檢查網路或 Apps Script 部署存取權後重試。</p>'+
+    '<button class="btn btn-primary" onclick="finish()">重新送出</button></div></div>';
+  var R=S.serverResults||{confirmed:[],needsMoreData:[],cannotDetermine:[]};
+  function zone(title,arr,cls,zk){ if(!arr||!arr.length)return''; return '<div class="zone"><div class="zone-h '+cls+'">'+title+'（'+arr.length+'）</div>'+arr.map(function(o){return srvCard(o,zk);}).join('')+'</div>'; }
+  var body=zone('確定適用',R.confirmed,'zc','confirmed')+zone('適用 — 建議補充資料',R.needsMoreData,'zn','needs')+zone('無法判斷（資料不足）',R.cannotDetermine,'zx','cannot');
+  var emailHtml='<div class="card" id="emailstep"><div class="email-h">把結果寄一份備份給自己</div>'+
+    '<input id="emailbox" type="email" placeholder="you@company.com">'+
+    '<label class="consent"><input type="checkbox" id="consent"> 我已閱讀並同意下述資料處理方式</label>'+
+    '<div class="privacy2">為寄送結果並保留紀錄，我們會儲存你的作答內容、系統算出的判斷結果與此 email，'+
+    '存放於受存取控制的雲端試算表，<b>保留 12 個月後自動刪除</b>；你可隨時來信要求提前刪除。本工具僅供初步自評，不構成法律意見。</div>'+
+    '<button class="btn btn-primary" onclick="realEmail()">寄送結果備份</button></div>';
+  var n=(R.confirmed||[]).length,m=(R.needsMoreData||[]).length,k=(R.cannotDetermine||[]).length;
+  return '<div class="card"><div class="end" style="padding-bottom:6px"><div class="icon">📋</div>'+
+    '<h2>初步合規診斷結果</h2><span class="count">確定適用 '+n+'｜建議補充 '+m+'｜無法判斷 '+k+'</span>'+
+    '<p>以下為依你的作答比對 Legal Theme 的結果。</p></div>'+body+'</div>'+emailHtml+
+    '<div class="actions" style="margin-top:4px"><button class="btn btn-ghost" onclick="restart()">↺ 再診斷另一顆電池</button></div>';
 }
+
+/* ====== 入口頁（單一卡片）====== */
 function landingHTML(){
  return '<div class="landing">'+
   '<div class="lhero"><div class="licon">🔋</div>'+
-  '<h1>歐盟電池法 — 初步合規診斷工具</h1>'+
+  '<h1>歐盟電池法 — 初步合規診斷</h1>'+
   '<p class="lsub">約 6–10 分鐘，初步判斷你的產品是否受 EU 2023/1542 規範、涉及哪些義務（Legal Theme）。</p>'+
   '<button class="btn btn-primary lbtn" onclick="startTool()">開始診斷 →</button></div>'+
-  '<div class="lcard"><h3>這個工具在做什麼</h3><p>企業要判斷自己是否受歐盟電池法規範、涉及哪些義務，通常需要顧問逐條解讀，門檻高、耗時。本工具用分階段問答，依決策樹自動判斷適用的 Legal Theme，產出初步風險畫像，作為後續諮詢的起點。</p></div>'+
-  '<div class="lcard"><h3>適合誰用</h3><p>ICT／電子產品企業（筆電、手機、網通設備、IoT 裝置，以及電芯／模組／零組件供應商），用來快速摸清自己在歐盟電池法下的合規範圍。</p></div>'+
-  '<div class="lcard"><h3>怎麼運作</h3><p>回答約 10–20 題（依產品自動跳題），系統把答案轉成法規 trigger，比對各 Legal Theme 的啟動條件，輸出「確定適用 / 建議補充資料 / 無法判斷」三類結果。</p></div>'+
-  '<div class="lcard ldev"><h3>開發與研究</h3><p>本工具由 <b>REnato lab</b> 研究開發，法律依據為 Regulation (EU) 2023/1542。<br>聯絡：<a href="mailto:info@renato-lab.com">info@renato-lab.com</a></p>'+
-  '<p class="ldisc">※ 本工具僅提供初步自評，不構成法律意見；實際義務以最新法規與授權法規（Delegated Acts）為準。</p></div>'+
-  '<button class="btn btn-primary lbtn2" onclick="startTool()">開始診斷 →</button></div>';
+  '<div class="lcard">'+
+   '<p>企業要判斷自己是否受歐盟電池法規範、涉及哪些義務，通常需要顧問逐條解讀，門檻高、耗時。本工具用<span class="lk">分階段問答</span>，依決策樹自動判斷適用的 Legal Theme，產出初步風險畫像，作為後續諮詢的起點。</p>'+
+   '<p><span class="lk">適合誰用：</span>ICT／電子產品企業（筆電、手機、網通設備、IoT 裝置，以及電芯／模組／零組件供應商）。回答約 10–20 題（依產品自動跳題），系統把答案轉成法規 trigger、比對各 Legal Theme 的啟動條件，輸出「確定適用 / 建議補充資料 / 無法判斷」三類結果。</p>'+
+   '<p class="ldisc">本工具由 <b>REnato lab</b> 研究開發，法律依據為 Regulation (EU) 2023/1542；僅提供初步自評，不構成法律意見，實際義務以最新法規與授權法規為準。聯絡：<a href="mailto:info@renato-lab.com">info@renato-lab.com</a></p>'+
+  '</div>'+
+  '<button class="btn btn-primary lbtn2" style="display:block;margin:0 auto;padding:13px 30px" onclick="startTool()">開始診斷 →</button></div>';
 }
 function startTool(){ S.started=true; render(); }
+
 function render(){
-  const app=document.getElementById("app");
+  var app=document.getElementById("app");
   if(!S.started){ app.innerHTML=landingHTML(); window.scrollTo(0,0); return; }
   if(S.ended){ app.innerHTML=progressHTML()+endHTML(); window.scrollTo(0,0); return; }
-  const st=STAGES[S.idx];
-  const qs=stageQs(S.idx);
-  const body=qs.length ? qs.map(qHTML).join("")
-    : `<div class="q-hint" style="padding:10px 0">此階段依目前作答不適用。請點上方其他階段，或先補答前面的題目後再回來。</div>`;
-  const nextLabel=S.idx===5?"完成診斷 →":"下一步 →";
-  app.innerHTML=progressHTML()+`<div class="card">
-    <div class="stagehd">階段 ${S.idx+1}／6 · ${st.n}</div>
-    <div class="stagesub">${st.sub}　|　本階段 ${qs.length} 題</div>
-    ${body}</div>
-    <div class="nav">
-      <button class="btn btn-ghost" onclick="back()" ${S.hist.length?'':'style="visibility:hidden"'}>← 上一步</button>
-      <button class="btn btn-primary" onclick="next()" ${canNext()?'':'disabled'}>${nextLabel}</button>
-    </div>`;
+  var st=STAGES[S.idx], qs=stageQs(S.idx);
+  var bodyq=qs.length?qs.map(qHTML).join(""):'<div class="q-hint" style="padding:10px 0">此階段依目前作答不適用。請點上方其他階段，或先補答前面的題目。</div>';
+  var nextLabel=S.idx===5?"完成診斷 →":"下一步 →";
+  app.innerHTML=progressHTML()+'<div class="card"><div class="stagehd">階段 '+(S.idx+1)+'／6 · '+st.n+'</div><div class="stagesub">'+st.sub+'　|　本階段 '+qs.length+' 題</div>'+bodyq+'</div>'+
+    '<div class="nav"><button class="btn btn-ghost" onclick="back()" '+(S.hist.length?'':'style="visibility:hidden"')+'>← 上一步</button>'+
+    '<button class="btn btn-primary" onclick="next()" '+(canNext()?'':'disabled')+'>'+nextLabel+'</button></div>';
 }
 render();
 </script>
