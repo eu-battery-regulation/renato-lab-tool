@@ -198,11 +198,18 @@ function optHTML(q){
 function toggleHint(btn){ var el=btn.previousElementSibling; var open=el.classList.toggle('open'); btn.textContent=open?'收合 ▴':'看更多 ▾'; }
 function qHTML(q){
   var multi=q.type==="multi"?'<span class="multi-tag">可複選</span>':"";
-  var plain=q.hint.replace(/<[^>]+>/g,'');
-  var hintBlock = plain.length>90
-    ? '<div class="q-hint hint-clamp">'+q.hint+'</div><span class="hint-toggle" onclick="toggleHint(this)">看更多 ▾</span>'
-    : '<span class="q-hint">'+q.hint+'</span>';
+  var hintBlock = '<div class="q-hint hint-clamp">'+q.hint+'</div><span class="hint-toggle" onclick="toggleHint(this)" style="display:none">看更多 ▾</span>';
   return '<div class="q"><div class="q-label">'+q.label+multi+'</div>'+hintBlock+optHTML(q)+'</div>';
+}
+/* 只有實際超過 3 行（內容被截斷）時才顯示「看更多」；剛好或未足 3 行則隱藏 */
+function applyHintToggles(){
+  document.querySelectorAll('.hint-clamp').forEach(function(el){
+    var btn=el.nextElementSibling;
+    if(!btn||!btn.classList.contains('hint-toggle'))return;
+    el.classList.remove('open');
+    btn.textContent='看更多 ▾';
+    btn.style.display = (el.scrollHeight > el.clientHeight+1) ? '' : 'none';
+  });
 }
 function canNext(){ return stageQs(S.idx).every(function(q){ if(q.type==="text")return true; if(q.type==="multi")return (S.a[q.id]||[]).length>0; return !!S.a[q.id]; }); }
 function outOfScope(){ return S.a["G0-Q02"]==="no"; }
@@ -318,6 +325,7 @@ function render(){
   app.innerHTML=progressHTML()+'<div class="card"><div class="stagehd">階段 '+(S.idx+1)+'／6 · '+st.n+'</div><div class="stagesub">'+st.sub+'　|　本階段 '+qs.length+' 題</div>'+bodyq+'</div>'+
     '<div class="nav"><button class="btn btn-ghost" onclick="back()" '+(S.hist.length?'':'style="visibility:hidden"')+'>← 上一步</button>'+
     '<button class="btn btn-primary" onclick="next()" '+(canNext()?'':'disabled')+'>'+nextLabel+'</button></div>';
+  applyHintToggles();
 }
 render();
 </script>
