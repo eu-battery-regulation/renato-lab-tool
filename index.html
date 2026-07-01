@@ -194,7 +194,7 @@ const STAGES_EN=[
 ];
 const I18N={
  "G0-Q01":{label:"Enter the product name or model for this assessment (used as the report title).",hint:"This field does not affect the results."},
- "G0-Q02":{label:"Does the product involve a battery, a product containing a battery, a battery cell or module, a stationary battery energy storage system, a used battery, or a waste battery?",hint:"Determines whether your product type falls within the scope of the EU Battery Regulation.",opts:{yes:"Yes",no:"No",unknown:"Not sure"}},
+ "G0-Q02":{label:"Does the product involve a battery, a product incorporating a battery, a battery cell or module, a stationary battery energy storage system, a used battery, or a waste battery?",hint:"Determines whether your product type falls within the scope of the EU Battery Regulation.",opts:{yes:"Yes",no:"No",unknown:"Not sure"}},
  "G0-Q03":{label:"Is the product connected to the EU market?",hint:"Determines whether your product is affected by the EU Battery Regulation — directly, or indirectly through the supply chain.",opts:{"direct EU route":"Placed on the EU market","customer data request only":"Customer requests EU compliance data","no EU relevance":"Not related to the EU",unknown:"Not sure"}},
  "G1-Q01":{label:"How is the battery supplied?",hint:"Select how this battery is supplied in this case. <b>Standalone battery</b> = a battery or battery pack sold on its own; <b>Incorporated into another product</b> = built into a laptop, phone, power tool, energy storage unit, etc. (selecting this will further confirm whether it is a stationary system); <b>Battery cell / module</b> = supplied for downstream assembly.",opts:{"Standalone batteries":"Standalone battery","Batteries incorporated into products":"Incorporated into another product (e.g. laptop, phone, power tool, energy storage)","Battery cells or battery modules made available for end use":"Battery cell / module",unknown:"Other or not sure"}},
  "G1-Q02":{label:"Is this product a “stationary” battery energy storage system (BESS)?",hint:"A stationary battery energy storage system is installed in a fixed location to store and supply electricity (e.g. residential, commercial & industrial, or grid-scale storage); portable storage devices are not included. The EU sets additional safety requirements for stationary BESS, and they are generally classified as industrial batteries.",opts:{yes:"Yes",no:"No",unknown:"Not sure"}},
@@ -291,7 +291,7 @@ function finish(){
   document.getElementById('app').innerHTML=progressHTML()+'<div class="card"><div class="end"><div class="icon">⏳</div><h2>'+L('計算中…','Calculating…')+'</h2><p>'+L('正在送出作答並比對 Legal Theme，請稍候。','Submitting your answers and matching them against the Legal Themes, please wait.')+'</p></div></div>';
   window.scrollTo(0,0);
   fetch(GAS_URL,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},
-    body:JSON.stringify({token:GAS_TOKEN,caseName:S.a['G0-Q01']||'',answers:buildAnswers(),applicable:collectApplicable()})})
+    body:JSON.stringify({token:GAS_TOKEN,lang:S.lang,caseName:S.a['G0-Q01']||'',answers:buildAnswers(),applicable:collectApplicable()})})
    .then(function(r){return r.json();})
    .then(function(data){if(data.error)throw new Error(data.error);S.serverResults=data.results;S.resultId=data.resultId;S.ended='complete';render();})
    .catch(function(err){S.fetchError=String(err);S.ended='error';render();});
@@ -302,7 +302,7 @@ function realEmail(){
   if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(em)){alert(L('請輸入有效 email','Please enter a valid email address'));return;}
   document.getElementById('emailstep').innerHTML='<div class="emaildone">'+L('寄送中…','Sending…')+'</div>';
   fetch(GAS_URL,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},
-    body:JSON.stringify({token:GAS_TOKEN,action:'email',email:em,resultId:S.resultId,caseName:S.a['G0-Q01']||'',answers:buildAnswers(),applicable:collectApplicable()})})
+    body:JSON.stringify({token:GAS_TOKEN,action:'email',lang:S.lang,email:em,resultId:S.resultId,caseName:S.a['G0-Q01']||'',answers:buildAnswers(),applicable:collectApplicable()})})
    .then(function(){document.getElementById('emailstep').innerHTML='<div class="emaildone">'+L('✓ 已寄至 ','✓ Sent to ')+em+L('，請查收 PDF 報告附件。','. Please check the PDF report attachment.')+'</div>';})
    .catch(function(){document.getElementById('emailstep').innerHTML='<div class="emaildone" style="color:#c0392b">'+L('寄送失敗，請稍後再試。','Failed to send. Please try again later.')+'</div>';});
 }
