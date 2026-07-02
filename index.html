@@ -13,8 +13,13 @@
   .hd-row{display:flex;align-items:center;gap:14px;max-width:740px;margin:0 auto}
   .hd-logo svg{height:26px;width:auto;display:block} .hd-logo svg path{fill:#fff}
   header h1{margin:0;font-size:16px;font-weight:700;letter-spacing:.02em} header p{margin:3px 0 0;font-size:11.5px;opacity:.82}
-  .langbtn{margin-left:auto;align-self:center;background:transparent;color:#fff;border:1px solid rgba(255,255,255,.45);padding:5px 11px;font-size:12px;cursor:pointer;font-family:inherit;white-space:nowrap}
-  .langbtn:hover{background:rgba(255,255,255,.14)}
+  .topnav{margin-left:auto;display:flex;align-items:center;gap:8px;flex-wrap:wrap;justify-content:flex-end}
+  .navbtn{background:transparent;color:#fff;border:1px solid rgba(255,255,255,.45);padding:5px 11px;font-size:12px;cursor:pointer;font-family:inherit;white-space:nowrap}
+  .navbtn:hover{background:rgba(255,255,255,.14)}
+  @media (max-width:480px){ .hd-row{flex-wrap:wrap;row-gap:8px} .topnav{flex-basis:100%;margin-left:0} }
+  .about .lcard a{color:var(--green);font-weight:600}
+  .about .lbtn2{display:block;margin:18px auto 0;padding:13px 30px}
+  .about .back{display:block;margin:0 auto 14px;background:none;border:none;color:var(--muted);font-size:12.5px;cursor:pointer;font-family:inherit;text-decoration:underline}
   .wrap{max-width:740px;margin:0 auto;padding:18px 18px 60px}
   .progress{display:flex;gap:5px;margin-bottom:6px}
   .pstep{flex:1;text-align:center;font-size:10px;color:var(--muted);cursor:pointer;transition:.12s}
@@ -116,7 +121,10 @@
 </svg></span>
   <div><h1 id="hTitle">歐盟電池法 — 初步合規診斷</h1>
   <p id="hSub">6 階段 · 約 10 分鐘完成 · 依作答自動跳題</p></div>
-  <button id="langBtn" class="langbtn" onclick="toggleLang()">🌐 EN</button>
+  <nav class="topnav">
+    <button id="aboutBtn" class="navbtn" onclick="showAbout()">關於問卷</button>
+    <button id="langBtn" class="navbtn" onclick="toggleLang()">🌐 EN</button>
+  </nav>
 </div></header>
 <div class="wrap">
   <div id="app"></div>
@@ -138,7 +146,7 @@ const STAGES=[
  {n:"角色責任",sub:"供應鏈角色與責任"},
 ];
 
-/* ====== 25 題（值＝canonical fact，直接餵 trigger）====== */
+/* ====== 22 題（值＝canonical fact，直接餵 trigger）；2026/07/01 更新：G3 新增 cell/module supplier 分支、G5 economic operator／producer 簡化為 2 題 ====== */
 const has=(v,x)=>Array.isArray(v)&&v.includes(x);
 const QS=[
  {id:"G0-Q01",s:0,trig:"—",type:"text",label:"請填寫本次診斷的產品名稱或型號，作為報告標題。",hint:"本欄不影響判讀結果。",when:a=>true},
@@ -158,8 +166,10 @@ const QS=[
  {id:"G2-Q03",s:2,trig:"重入市場（context）",type:"single",label:"若電池產品為使用過的電池，或廢電池，是否預計重新進入市場或投入使用？",hint:"已使用電池與廢電池，若規劃於處理後重新進入市場，需遵守相關的廢棄物管理、品質、安全、性能、包裝運輸等規範。",opts:[{v:"yes",t:"是"},{v:"no",t:"否"},{v:"unknown",t:"不清楚",unk:1}],when:a=>["used","waste"].includes(a["G2-Q01"])},
  {id:"G3-Q01",s:3,trig:"路徑（context）",type:"single",label:"貴公司（或您的歐盟子公司）是直接將產品銷入歐盟，還是提供客戶歐盟合規資料需求？",hint:"判斷歐盟對於貴公司的管轄方式，可能為直接管轄，或透過供應鏈間接影響。",
    opts:[{v:"direct EU market route",t:"直接進入歐盟市場"},{v:"support-only customer request",t:"僅支援客戶歐盟合規資料"},{v:"no route",t:"兩者皆非"},{v:"unknown",t:"不清楚",unk:1}],when:a=>!!a["G2-Q01"]},
- {id:"G3-Q02",s:3,trig:"market deployment actions",type:"multi",label:"產品進入歐盟市場的方式爲何？",hint:"<b>投放市場</b>：指電池「首次」供應在歐盟市場上。一顆電池的生命週期中，只會被「投放市場」一次，例如歐盟境內製造商首次出廠交貨，或進口商首次清關引入等。<br><b>在市場上供應</b>：指在商業活動過程中，將電池供應至歐盟市場以供分銷或使用，無論有償（付費）或無償（免費）。只要電池在歐盟供應鏈中發生任何形式的轉移（例如進口商交給經銷商、經銷商鋪貨給零售商），每一次轉移都符合此定義。<br><b>投入使用</b>：電池在沒有被投放市場的情況下，進入歐盟使用。本定義主要是防堵業者技巧性逃避前兩項定義，包含生產電池自用以及進口電池自用。",
-   opts:[{v:"placing on the market",t:"投放市場"},{v:"making available on the market",t:"在市場上提供販售"},{v:"putting into service",t:"投入使用"},{v:"none of these",t:"皆非"},{v:"unknown",t:"不清楚",unk:1}],when:a=>!!a["G3-Q01"]},
+ {id:"G3-Q02",s:3,trig:"suppliers of battery cells and battery module",type:"single",label:"貴公司是否為電芯或電池模組的供應商？",hint:"若貴公司僅支援客戶提供歐盟電池法合規資料，請確認貴公司是否為電芯或電池模組供應商。若是，可能仍涉及供應鏈資訊、文件提供與配合責任。",
+   opts:[{v:"yes",t:"是"},{v:"no",t:"否"},{v:"unknown",t:"不清楚",unk:1}],when:a=>a["G3-Q01"]==="support-only customer request"},
+ {id:"G3-Q03",s:3,trig:"market deployment actions",type:"multi",label:"產品進入歐盟市場的方式爲何？",hint:"<b>投放市場</b>：指電池「首次」供應在歐盟市場上。一顆電池的生命週期中，只會被「投放市場」一次，例如歐盟境內製造商首次出廠交貨，或進口商首次清關引入等。<br><b>在市場上供應</b>：指在商業活動過程中，將電池供應至歐盟市場以供分銷或使用，無論有償（付費）或無償（免費）。只要電池在歐盟供應鏈中發生任何形式的轉移（例如進口商交給經銷商、經銷商鋪貨給零售商），每一次轉移都符合此定義。<br><b>投入使用</b>：電池在沒有被投放市場的情況下，進入歐盟使用。本定義主要是防堵業者技巧性逃避前兩項定義，包含生產電池自用以及進口電池自用。",
+   opts:[{v:"placing on the market",t:"投放市場"},{v:"making available on the market",t:"在市場上提供販售"},{v:"putting into service",t:"投入使用"},{v:"none of these",t:"皆非"},{v:"unknown",t:"不清楚",unk:1}],when:a=>a["G3-Q01"]==="direct EU market route"||a["G3-Q01"]==="unknown"},
  {id:"G4-Q01",s:4,trig:"industrial battery charge",type:"single",label:"工業電池是否「可充電」？",hint:"歐盟針對工業電池是否可充電，規劃不同的碳足跡以及性能與耐久度規範。",
    opts:[{v:"rechargeable",t:"可充電"},{v:"non-rechargeable",t:"不可充電"},{v:"unknown",t:"不清楚",unk:1}],when:a=>a["G1-Q03"]==="industrial battery"},
  {id:"G4-Q02",s:4,trig:"industrial battery capacity",type:"single",label:"工業電池裝置容量是否大於2 kWh？",hint:"歐盟針對工業電池是否大於2 kWh，規劃不同的碳足跡、再生料含量、電池護照適用性以及性能與耐久度規範。",
@@ -171,16 +181,12 @@ const QS=[
  {id:"G4-Q06",s:4,trig:"active materials",type:"multi",label:"電池產品是否包含下列材料？",hint:"歐盟針對使用鈷、鉛、鋰、鎳四種元素的電池，訂定再生料使用比例，以及廢電池材料回收率目標。",
    opts:[{v:"cobalt",t:"鈷"},{v:"lead",t:"鉛"},{v:"lithium",t:"鋰"},{v:"nickel",t:"鎳"},{v:"none of these",t:"以上皆不包含"},{v:"unknown",t:"不清楚",unk:1}],when:a=>["electric vehicle battery","SLI battery","LMT battery","industrial battery"].includes(a["G1-Q03"])},
  {id:"G4-Q07",s:4,trig:"removability exempt",type:"single",label:"可攜式電池產品或輕型運輸工具電池，是否適用於防水設備、醫療設備或不斷電設備？",hint:"歐盟針對依用於防水設備、醫療設備或不斷電設備的可攜式電池，給予關於可豁免可拆卸與可更換性的豁免。實際豁免條件較嚴格（如醫療設備限特定情形），最終以 Art. 11 條文與授權法規為準。",opts:[{v:"yes",t:"是"},{v:"no",t:"否"},{v:"unknown",t:"不清楚",unk:1}],when:a=>a["G1-Q01"]==="Batteries incorporated into products"&&["portable battery","LMT battery"].includes(a["G1-Q03"])},
- {id:"G5-Q01",s:5,trig:"product supply chain actor",type:"single",label:"貴公司（或您的歐盟子公司），在產品價值鏈上的角色？",hint:"以本案例的 EU 市場/客戶情境回答。",
-   opts:[{v:"manufacturer",t:"製造商"},{v:"authorised representative",t:"歐盟授權代表"},{v:"importer",t:"進口商"},{v:"distributor",t:"經銷商"},{v:"fulfilment service provider",t:"履行服務提供者"},{v:"intermediary service provider under the e-commerce directive",t:"《電子商務指令》規範下的中介服務提供者"},{v:"end-user",t:"使用者"},{v:"unknown",t:"不清楚",unk:1}],when:a=>!!a["G3-Q02"]},
- {id:"G5-Q02",s:5,trig:"economic operator",type:"single",label:"貴公司是否為《歐盟市場監督條例》下規範的「經濟營運商」？",hint:"依《歐盟市場監督條例》規範，所有在歐盟境內提供產品的業者，都需指定一「經濟營運商」作為與當地主管機關的合規事務聯絡窗口。窗口通常由歐盟當地製造商擔任，若產品不是歐盟當地生產，可由進口商、簽約授權代表（擁有海外製造商的書面授權）、履約服務提供者（提供倉儲、包裝、寄送服務的物流商）擔任。",opts:[{v:"yes",t:"是"},{v:"no",t:"否"},{v:"unknown",t:"不清楚",unk:1}],when:a=>!!a["G5-Q01"]},
- {id:"G5-Q03",s:5,trig:"suppliers of cells/modules",type:"single",label:"貴公司是否為電芯或電池模組的供應商？",hint:"歐盟電池法，要求業者提供上下游及執法機關相關文件、確保產品合規、提供資訊、維護儲存運輸安全、風險監控抽樣測試、主動通報違法行為、配合機關執法等責任。電芯或電池模組的供應商也包含在內。",opts:[{v:"yes",t:"是"},{v:"no",t:"否"},{v:"unknown",t:"不清楚",unk:1}],when:a=>!!a["G5-Q02"]},
- {id:"G5-Q04",s:5,trig:"Art.44（context）",type:"single",label:"產品是否涉及貼牌販售、改裝或修改電池用途？",hint:"歐盟電池法將貼牌販售、改裝、修改電池用途的進口商及經銷商，視為製造商，並要求其遵守與電池製造商相同的合規責任。",
-   opts:[{v:"yes",t:"是"},{v:"no",t:"否"},{v:"not applicable",t:"不適用"},{v:"unknown",t:"不清楚",unk:1}],when:a=>["importer","distributor"].includes(a["G5-Q01"])},
- {id:"G5-Q05",s:5,trig:"producers",type:"single",label:"貴公司（或您的歐盟子公司）是否為《廢棄物架構指令》下具備「延伸生產者責任（EPR）」的「生產者」？",hint:"根據歐盟《廢棄物架構指令》，生產者需擔負產品廢棄後的處理責任。電池法針對此部分有做出進階規範。",opts:[{v:"yes",t:"是"},{v:"no",t:"否"},{v:"unknown",t:"不清楚",unk:1}],when:a=>!!a["G5-Q03"]},
- {id:"G5-Q06",s:5,trig:"PRO appointed by producer",type:"single",label:"貴公司（或您的歐盟子公司）是否已指定「生產者責任組織（PRO）」協助履行「延伸生產者責任（EPR）」？",hint:"根據歐盟《廢棄物架構指令》，生產者可與「生產者責任組織（PRO）」簽約，委託對方負擔產品廢棄後的處理責任。",opts:[{v:"yes",t:"是"},{v:"no",t:"否"},{v:"unknown",t:"不清楚",unk:1}],when:a=>["yes","unknown"].includes(a["G5-Q05"])},
- {id:"G5-Q07",s:5,trig:"net turnover",type:"single",label:"貴公司（含集團母公司）淨營業額是否小於4000萬歐元？",hint:"歐盟電池法以淨營業額作為電池盡職調查義務的啟動門檻。",
-   opts:[{v:"less than EUR 40 million",t:"小於4000萬歐元"},{v:"no less than EUR 40 million",t:"大於或等於4000萬歐元"},{v:"unknown",t:"不清楚",unk:1}],when:a=>["yes","unknown"].includes(a["G5-Q02"])},
+ {id:"G5-Q01",s:5,trig:"economic operator",type:"single",label:"貴公司是否符合下列任一與 EU 市場供應、進口、銷售、配送或履約有關的情境？",hint:"若貴公司符合下列任一 EU 相關情境，請勾選「是」：<br>－以貴公司之名稱或商標，在 EU 市場供應本電池或含電池產品。<br>－委託他方設計或製造後，以貴公司品牌將本產品供應至 EU。<br>－貴公司位於 EU，並將非 EU 來源之本產品引進並供應至 EU 市場。<br>－於 EU 市場從事本產品之後續轉售、配送或零售，或向 EU 客戶提供替換電池、備品或售後替換品。<br>－於 EU 境內代表其他賣方、貨主或平台商提供倉儲、包裝、地址標示、出貨或交付等履約服務。",
+   opts:[{v:"yes",t:"是"},{v:"no",t:"否"},{v:"unknown",t:"不清楚",unk:1}],when:a=>!!a["G3-Q01"]},
+ {id:"G5-Q02",s:5,trig:"producers",type:"single",label:"貴公司是否在 EU 任一會員國供應、銷售或遠距銷售本電池或含電池產品？",hint:"若貴公司於 EU 任一會員國符合下列任一情境，請勾選「是」：<br>－以貴公司之名稱或商標供應本電池或含電池產品。<br>－以貴公司品牌轉售他方製造之電池或含電池產品。<br>－將其他 EU 會員國來源之本產品供應至特定 EU 會員國市場。<br>－將非 EU 來源之本產品供應至特定 EU 會員國市場。<br>－透過網站、平台、遠距合約或跨境電商，直接將本產品銷售予某一 EU 會員國之終端使用者（end-user）。",
+   opts:[{v:"yes",t:"是"},{v:"no",t:"否"},{v:"unknown",t:"不清楚",unk:1}],when:a=>!!a["G5-Q01"]},
+ {id:"G5-Q03",s:5,trig:"net turnover",type:"single",label:"貴公司（含集團母公司）淨營業額是否小於4000萬歐元？",hint:"歐盟電池法以淨營業額作為電池盡職調查義務的啟動門檻。",
+   opts:[{v:"less than EUR 40 million",t:"小於4000萬歐元"},{v:"no less than EUR 40 million",t:"大於或等於4000萬歐元"},{v:"unknown",t:"不清楚",unk:1}],when:a=>["yes","unknown"].includes(a["G5-Q01"])},
 ];
 
 /* ====== 英文翻譯層（依法規用語；中文為主檔，英文為覆寫層）====== */
@@ -203,7 +209,8 @@ const I18N={
  "G2-Q02":{label:"If your process involves used or waste batteries, select the type of operation.",hint:"<b>Re-use</b>: using a non-waste battery or its parts again for the same purpose it was designed for.<br><b>Repurposing</b>: using a non-waste battery or its parts for a purpose other than the one it was originally designed for.<br><b>Remanufacturing</b>: operations on a used battery under strict objective criteria — all cells and modules are disassembled and assessed, a specified share of new, used or recovered cells, modules or parts is used, capacity is restored to at least 90% of the original rated capacity, the state-of-health spread between individual cells does not exceed 3%, and the battery is returned to the same purpose it was originally designed for.<br><b>Preparation for re-use</b>: preparing a waste battery or its parts so it can be re-used without further pre-treatment.<br><b>Preparation for repurposing</b>: preparing a waste battery or its parts so it can be used for a purpose other than originally designed.<br><b>Preparation for recycling</b>: treatment of a waste battery before any recycling process, including (but not limited to) storage, handling and disassembly of battery packs, or separating fractions that are not part of the battery itself.<br><b>Sorting</b>: initial classification of collected waste batteries for transport to a treatment facility.",opts:{"reuse route":"Re-use","repurposing route":"Repurposing","remanufacturing route":"Remanufacturing","preparation for re-use":"Preparation for re-use (waste status change)","preparation for repurposing":"Preparation for repurposing (waste status change)","preparation for recycling":"Preparation for recycling (waste status change)",sorting:"Sorting",other:"Other",unknown:"Not sure"}},
  "G2-Q03":{label:"If the battery is a used or waste battery, is it expected to re-enter the market or be put into service?",hint:"Used and waste batteries returned to the market after treatment must meet the applicable waste management, quality, safety, performance, and packaging and transport requirements.",opts:{yes:"Yes",no:"No",unknown:"Not sure"}},
  "G3-Q01":{label:"Does your company (or your EU subsidiary) place products on the EU market directly, or only support customers with EU compliance data?",hint:"Determines how the EU regulates your company — directly, or indirectly through the supply chain.",opts:{"direct EU market route":"Place products on the EU market directly","support-only customer request":"Only support customers with EU compliance data","no route":"Neither",unknown:"Not sure"}},
- "G3-Q02":{label:"How does the product enter the EU market?",hint:"<b>Placing on the market</b>: the first time a battery is supplied on the EU market. A battery is placed on the market only once in its life — e.g. an EU manufacturer’s first ex-works delivery, or an importer’s first customs clearance.<br><b>Making available on the market</b>: supplying a battery for distribution or use on the EU market in the course of a commercial activity, whether for payment or free of charge. Every transfer in the EU supply chain (e.g. importer to distributor, distributor to retailer) meets this definition.<br><b>Putting into service</b>: a battery entering use in the EU without being placed on the market. This mainly closes loopholes where operators avoid the first two definitions, including batteries produced or imported for own use.",opts:{"placing on the market":"Placing on the market","making available on the market":"Making available on the market","putting into service":"Putting into service","none of these":"None of these",unknown:"Not sure"}},
+ "G3-Q02":{label:"Is your company a supplier of battery cells or battery modules?",hint:"If your company only supports customers with EU Battery Regulation compliance data, please confirm whether your company supplies battery cells or battery modules. If so, you may still have supply-chain information, documentation and cooperation responsibilities.",opts:{yes:"Yes",no:"No",unknown:"Not sure"}},
+ "G3-Q03":{label:"How does the product enter the EU market?",hint:"<b>Placing on the market</b>: the first time a battery is supplied on the EU market. A battery is placed on the market only once in its life — e.g. an EU manufacturer’s first ex-works delivery, or an importer’s first customs clearance.<br><b>Making available on the market</b>: supplying a battery for distribution or use on the EU market in the course of a commercial activity, whether for payment or free of charge. Every transfer in the EU supply chain (e.g. importer to distributor, distributor to retailer) meets this definition.<br><b>Putting into service</b>: a battery entering use in the EU without being placed on the market. This mainly closes loopholes where operators avoid the first two definitions, including batteries produced or imported for own use.",opts:{"placing on the market":"Placing on the market","making available on the market":"Making available on the market","putting into service":"Putting into service","none of these":"None of these",unknown:"Not sure"}},
  "G4-Q01":{label:"Is the industrial battery rechargeable?",hint:"The EU sets different carbon footprint and performance & durability requirements depending on whether an industrial battery is rechargeable.",opts:{rechargeable:"Rechargeable","non-rechargeable":"Non-rechargeable",unknown:"Not sure"}},
  "G4-Q02":{label:"Does the industrial battery have a capacity greater than 2 kWh?",hint:"The EU sets different carbon footprint, recycled content, battery passport applicability and performance & durability requirements depending on whether an industrial battery exceeds 2 kWh.",opts:{"capacity greater than 2 kWh":"Greater than 2 kWh","capacity not greater than 2 kWh":"2 kWh or less",unknown:"Not sure"}},
  "G4-Q03":{label:"Does the industrial battery rely on external storage (e.g. a flow battery)?",hint:"For industrial batteries with exclusively external storage (e.g. flow batteries), the EU grants partial exemptions on carbon footprint, recycled content, and performance & durability.",opts:{"with exclusively external storage":"Yes","without exclusively external storage":"No",unknown:"Not sure"}},
@@ -211,13 +218,9 @@ const I18N={
  "G4-Q05":{label:"Is the portable battery a button cell?",hint:"The EU exempts button cells from the performance & durability requirements.",opts:{yes:"Yes",no:"No",unknown:"Not sure"}},
  "G4-Q06":{label:"Does the battery contain any of the following materials?",hint:"The EU sets recycled-content shares and waste-battery material recovery targets for batteries containing cobalt, lead, lithium or nickel.",opts:{cobalt:"Cobalt",lead:"Lead",lithium:"Lithium",nickel:"Nickel","none of these":"None of these",unknown:"Not sure"}},
  "G4-Q07":{label:"For a portable or LMT battery, is it used in waterproof equipment, medical devices, or uninterruptible power supplies?",hint:"The EU grants exemptions from the removability and replaceability requirements for portable batteries used in waterproof equipment, certain medical devices, or uninterruptible power supplies. The actual exemption conditions are narrower (e.g. medical devices only in specific cases); the final position depends on Art. 11 and the delegated acts.",opts:{yes:"Yes",no:"No",unknown:"Not sure"}},
- "G5-Q01":{label:"What is the role of your company (or your EU subsidiary) in the product value chain?",hint:"Answer based on the EU market or customer situation in this case.",opts:{manufacturer:"Manufacturer","authorised representative":"Authorised representative (EU)",importer:"Importer",distributor:"Distributor","fulfilment service provider":"Fulfilment service provider","intermediary service provider under the e-commerce directive":"Intermediary service provider under the e-Commerce Directive","end-user":"End-user",unknown:"Not sure"}},
- "G5-Q02":{label:"Is your company an “economic operator” regulated under the EU Market Surveillance Regulation?",hint:"Under the EU Market Surveillance Regulation, any business making products available in the EU must designate an “economic operator” as the compliance contact point for the local authorities. This is usually the EU-based manufacturer; if the product is not made in the EU, it can be the importer, a contracted authorised representative (holding written authorisation from the overseas manufacturer), or a fulfilment service provider (a logistics provider handling storage, packing and shipping).",opts:{yes:"Yes",no:"No",unknown:"Not sure"}},
- "G5-Q03":{label:"Is your company a supplier of battery cells or battery modules?",hint:"The EU Battery Regulation requires operators to provide documents to upstream and downstream parties and to enforcement authorities, ensure product compliance, provide information, maintain safe storage and transport, monitor risks and conduct sample testing, report non-compliance proactively, and cooperate with authorities. Suppliers of battery cells or modules are also covered.",opts:{yes:"Yes",no:"No",unknown:"Not sure"}},
- "G5-Q04":{label:"Does the product involve own-brand sale, modification, or a change to the intended use of the battery?",hint:"The EU Battery Regulation treats importers and distributors who sell under their own brand, modify a battery, or change its intended use as manufacturers, subject to the same compliance obligations as battery manufacturers.",opts:{yes:"Yes",no:"No","not applicable":"Not applicable",unknown:"Not sure"}},
- "G5-Q05":{label:"Is your company (or your EU subsidiary) a “producer” with extended producer responsibility (EPR) under the Waste Framework Directive?",hint:"Under the EU Waste Framework Directive, producers are responsible for treating products once they become waste. The Battery Regulation adds further requirements on this.",opts:{yes:"Yes",no:"No",unknown:"Not sure"}},
- "G5-Q06":{label:"Has your company (or your EU subsidiary) appointed a producer responsibility organisation (PRO) to help fulfil extended producer responsibility (EPR)?",hint:"Under the EU Waste Framework Directive, a producer may contract a producer responsibility organisation (PRO) to take on responsibility for treating products once they become waste.",opts:{yes:"Yes",no:"No",unknown:"Not sure"}},
- "G5-Q07":{label:"Is the net turnover of your company (including the group parent) less than EUR 40 million?",hint:"The EU Battery Regulation uses net turnover as the threshold that triggers the battery due-diligence obligations.",opts:{"less than EUR 40 million":"Less than EUR 40 million","no less than EUR 40 million":"EUR 40 million or more",unknown:"Not sure"}}
+ "G5-Q01":{label:"Does your company match any of the following scenarios involving supplying, importing, selling, distributing or fulfilling orders for this product in the EU?",hint:"Select “Yes” if your company matches any of the following EU-related scenarios:<br>– Supplies this battery or battery-incorporating product on the EU market under your own name or trademark.<br>– Has the product designed or manufactured by a third party and supplies it to the EU under your own brand.<br>– Is based in the EU and imports and supplies this product, sourced from outside the EU, onto the EU market.<br>– Resells, distributes or retails this product on the EU market, or provides EU customers with replacement batteries, spare parts, or after-sales replacements.<br>– Provides fulfilment services (warehousing, packing, labelling, dispatch or delivery) within the EU on behalf of another seller, consignor or platform operator.",opts:{yes:"Yes",no:"No",unknown:"Not sure"}},
+ "G5-Q02":{label:"Does your company supply, sell or remotely sell this battery or battery-incorporating product in any EU Member State?",hint:"Select “Yes” if your company matches any of the following scenarios in any EU Member State:<br>– Supplies this battery or battery-incorporating product under your own name or trademark.<br>– Resells, under your own brand, a battery or battery-incorporating product manufactured by another party.<br>– Supplies this product, sourced from another EU Member State, into a specific EU Member State market.<br>– Supplies this product, sourced from outside the EU, into a specific EU Member State market.<br>– Sells this product directly to an end-user in a specific EU Member State via a website, platform, distance contract, or cross-border e-commerce.",opts:{yes:"Yes",no:"No",unknown:"Not sure"}},
+ "G5-Q03":{label:"Is the net turnover of your company (including the group parent) less than EUR 40 million?",hint:"The EU Battery Regulation uses net turnover as the threshold that triggers the battery due-diligence obligations.",opts:{"less than EUR 40 million":"Less than EUR 40 million","no less than EUR 40 million":"EUR 40 million or more",unknown:"Not sure"}}
 };
 function L(zh,en){ return S.lang==='en'?en:zh; }
 function qL(q){ var e=I18N[q.id]; return (S.lang==='en'&&e&&e.label)?e.label:q.label; }
@@ -226,7 +229,7 @@ function oT(qid,o){ var e=I18N[qid]; return (S.lang==='en'&&e&&e.opts&&e.opts[o.
 function stN(i){ return S.lang==='en'?STAGES_EN[i].n:STAGES[i].n; }
 function stSub(i){ return S.lang==='en'?STAGES_EN[i].sub:STAGES[i].sub; }
 
-const S={a:{},idx:0,skipped:new Set(),ended:null,hist:[],started:false,lang:'zh'};
+const S={a:{},idx:0,skipped:new Set(),ended:null,hist:[],started:false,lang:'zh',showAbout:false};
 function pick(id,v){ S.a[id]=v; render(); }
 function toggle(id,v){ const arr=S.a[id]||(S.a[id]=[]); const i=arr.indexOf(v); if(i>=0)arr.splice(i,1); else arr.push(v); render(); }
 function setText(id,v){ S.a[id]=v; }
@@ -361,18 +364,41 @@ function landingHTML(){
   '</div>'+
   '<button class="btn btn-primary lbtn2" style="display:block;margin:0 auto;padding:13px 30px" onclick="startTool()">'+L('開始診斷 →','Start →')+'</button></div>';
 }
-function startTool(){ S.started=true; render(); }
+function startTool(){ S.started=true; S.showAbout=false; render(); window.scrollTo(0,0); }
+function showAbout(){ S.showAbout=true; render(); window.scrollTo(0,0); }
+function hideAbout(){ S.showAbout=false; render(); window.scrollTo(0,0); }
+
+/* ====== 關於問卷頁 ====== */
+const ABOUT_ZH=['歐盟《電池與廢電池法規》（Regulation (EU) 2023/1542）全文共有 96 條，並涵蓋多個附錄。法規內容不只涉及電池製造商、進口商、經銷商、供應商與生產者，也同時規範會員國、歐盟執委會、主管機關、符合性評估機構、生產者責任組織等不同角色的義務與程序。',
+ '為了協助企業快速掌握與自身營運與產品的合規風險，REnato lab 將法規中與 ICT 業者較相關的條文，整理為 17 個法規主題（Legal Themes），例如「碳足跡」、「再生含量」、「標示、QR、符合性與 CE」、「電池護照」及「EPR 與廢電池管理」等，方便您快速理解《電池與廢電池法規》中與公司最相關的面向。',
+ '填答完成後，系統將依據您的作答進行初步判斷，協助您辨識可能需要優先關注的法規主題、對應條文與責任方向。您也可以透過閱讀<a href="https://eur-lex.europa.eu/EN/legal-content/summary/sustainability-rules-for-batteries-and-waste-batteries.html" target="_blank" rel="noopener">歐盟的法規資料庫</a>中各主題的簡要說明，並視需要進一步釐清適用情境、資料證據與後續準備工作。',
+ '若您希望進一步確認產品是否適用特定要求，或需要建立更完整的法規判讀與證據準備路徑，歡迎聯絡 REnato lab 展開後續諮詢。'];
+const ABOUT_EN=['Regulation (EU) 2023/1542 (the EU Batteries and Waste Batteries Regulation) has 96 articles in total and covers a number of annexes. It covers not only battery manufacturers, importers, distributors, suppliers and producers, but also the obligations and procedures of Member States, the European Commission, competent authorities, conformity assessment bodies, producer responsibility organisations and other roles.',
+ 'To help companies quickly grasp the compliance risks relevant to their own operations and products, REnato lab has organised the articles most relevant to ICT operators into 17 Legal Themes — such as "Carbon Footprint", "Recycled Content", "Labelling, QR, Conformity & CE", "Battery Passport" and "EPR & waste-battery management" — to help you quickly understand the aspects of the Regulation most relevant to your company.',
+ 'After you complete the questionnaire, the tool will give a preliminary assessment based on your answers, helping you identify the Legal Themes, corresponding articles and responsibility directions that may deserve priority attention. You can also read the theme summaries in the <a href="https://eur-lex.europa.eu/EN/legal-content/summary/sustainability-rules-for-batteries-and-waste-batteries.html" target="_blank" rel="noopener">EU legal database</a>, and further clarify the applicable scenarios, data evidence and follow-up preparation as needed.',
+ 'If you would like to further confirm whether your product is subject to specific requirements, or to build a more complete legal-interpretation and evidence-preparation path, please contact REnato lab to begin follow-up consulting.'];
+function aboutHTML(){
+ var paras=(S.lang==='en'?ABOUT_EN:ABOUT_ZH).map(function(p){return '<p>'+p+'</p>';}).join('');
+ return '<div class="landing about">'+
+  '<div class="lhero"><h1>'+L('關於本問卷','About this questionnaire')+'</h1></div>'+
+  '<div class="lcard">'+paras+'</div>'+
+  '<button class="btn btn-primary lbtn2" onclick="startTool()">'+L('開始診斷 →','Start →')+'</button>'+
+  '<button class="back" onclick="hideAbout()">'+L('← 返回','← Back')+'</button>'+
+  '</div>';
+}
 function setLang(l){ S.lang=l; var x;
   x=document.getElementById('hTitle'); if(x)x.textContent=L('歐盟電池法 — 初步合規診斷','EU Battery Regulation — Preliminary Compliance Check');
   x=document.getElementById('hSub'); if(x)x.textContent=L('6 階段 · 約 10 分鐘完成 · 依作答自動跳題','6 stages · about 10 minutes · adapts to your answers');
   x=document.getElementById('footNote'); if(x)x.textContent=L('本工具提供初步自評，不構成法律意見；實際義務以最新法規與授權法規為準。© REnato lab','This tool provides a preliminary self-assessment, not legal advice; actual obligations depend on the latest regulation and delegated acts. © REnato lab');
   x=document.getElementById('langBtn'); if(x)x.textContent=S.lang==='zh'?'🌐 EN':'🌐 中文';
+  x=document.getElementById('aboutBtn'); if(x)x.textContent=L('關於問卷','About');
   render();
 }
 function toggleLang(){ setLang(S.lang==='zh'?'en':'zh'); }
 
 function render(){
   var app=document.getElementById("app");
+  if(S.showAbout){ app.innerHTML=aboutHTML(); return; }
   if(!S.started){ app.innerHTML=landingHTML(); window.scrollTo(0,0); return; }
   if(S.ended){ app.innerHTML=progressHTML()+endHTML(); window.scrollTo(0,0); return; }
   var qs=stageQs(S.idx);
