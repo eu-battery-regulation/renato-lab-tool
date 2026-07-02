@@ -11,7 +11,7 @@
     margin:0;background:var(--bg);color:var(--ink);line-height:1.55;background-image:linear-gradient(#dde4f0 1px,transparent 1px),linear-gradient(90deg,#dde4f0 1px,transparent 1px);background-size:26px 26px}
   header{background:var(--navy);color:#fff;padding:14px 20px}
   .hd-row{display:flex;align-items:center;gap:14px;max-width:740px;margin:0 auto}
-  .hd-logo svg{height:26px;width:auto;display:block} .hd-logo svg path{fill:#fff}
+  .hd-logo{cursor:pointer} .hd-logo svg{height:26px;width:auto;display:block} .hd-logo svg path{fill:#fff}
   header h1{margin:0;font-size:16px;font-weight:700;letter-spacing:.02em} header p{margin:3px 0 0;font-size:11.5px;opacity:.82}
   .topnav{margin-left:auto;display:flex;align-items:center;gap:8px;flex-wrap:wrap;justify-content:flex-end}
   .navbtn{background:transparent;color:#fff;border:1px solid rgba(255,255,255,.45);padding:5px 11px;font-size:12px;cursor:pointer;font-family:inherit;white-space:nowrap}
@@ -37,6 +37,7 @@
   .q:first-of-type{border-top:none;padding-top:4px}
   .qid{font-family:ui-monospace,Menlo,monospace;font-size:9.5px;color:#8c97ad;font-weight:700;letter-spacing:.06em}
   .q-label{font-weight:600;font-size:14.5px;margin:2px 0 3px}
+  .qnum{color:inherit}
   .q-hint{color:var(--muted);font-size:11.8px;margin-bottom:9px;display:block}
   .opts{display:flex;flex-wrap:wrap;gap:7px}
   .opt{border:1px solid var(--line);border-radius:0;padding:8px 13px;cursor:pointer;
@@ -52,6 +53,10 @@
   .btn-ghost{background:#fff;color:var(--muted);border:1px solid var(--line)}
   .end{text-align:center;padding:14px 8px}
   .end .icon{font-size:38px;margin-bottom:6px} .end h2{margin:0 0 6px;font-size:18px}
+  .case-line{font-size:11.5px;color:var(--muted);margin:0 0 12px}
+  .intro2{text-align:left;font-size:13px;line-height:1.7;color:var(--ink);margin:0 0 14px}
+  .intro2 p{margin:0 0 8px}
+  .basis2{margin:0}
   .end p{color:var(--muted);max-width:460px;margin:0 auto 14px;font-size:13px}
   .count{display:inline-block;background:var(--green-light);color:var(--green);font-weight:700;
     border-radius:0;padding:4px 14px;margin-bottom:14px;font-size:13px}
@@ -88,6 +93,7 @@
   .lcard p:last-child{margin-bottom:0}
   .lcard .lk{color:var(--green);font-weight:700}
   .ldisc{color:var(--muted);font-size:12px;border-top:1px solid var(--line);padding-top:12px;margin-top:4px!important}
+  .lastupd{color:#b0a98f;font-size:10.5px;margin:6px 0 0!important}
   .rpills{display:flex;gap:8px;flex-wrap:wrap;margin:2px 0 12px}
   .rp{font-size:11.5px;font-weight:700;padding:4px 10px;border:1px solid}
   .rp1{color:var(--green);border-color:var(--green);background:var(--green-light)}
@@ -102,7 +108,7 @@
 </head>
 <body>
 <header><div class="hd-row">
-  <span class="hd-logo"><svg width="148" height="49" viewBox="0 0 148 49" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <span class="hd-logo" onclick="goHome()" role="button" tabindex="0" aria-label="Home"><svg width="148" height="49" viewBox="0 0 148 49" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path d="M40.9 9.71001H69.15C69.64 9.71001 70.03 9.33001 70.03 8.85001V0.860001C70.03 0.390001 69.63 0 69.15 0H40.9C40.41 0 40.02 0.380001 40.02 0.860001V8.85001C40.02 9.32001 40.42 9.71001 40.9 9.71001Z" fill="#0055FF"/>
 <path d="M69.14 19.41H40.89C40.4 19.41 40.01 19.79 40.01 20.27V28.26C40.01 28.73 40.41 29.12 40.89 29.12H69.14C69.63 29.12 70.02 28.74 70.02 28.26V20.27C70.02 19.8 69.62 19.41 69.14 19.41Z" fill="#0055FF"/>
 <path d="M69.14 38.82H40.89C40.4 38.82 40.01 39.2 40.01 39.68V47.67C40.01 48.14 40.41 48.53 40.89 48.53H69.14C69.63 48.53 70.02 48.15 70.02 47.67V39.68C70.02 39.21 69.62 38.82 69.14 38.82Z" fill="#0055FF"/>
@@ -135,6 +141,8 @@
 /* ====== 設定（接 Apps Script）====== */
 const GAS_URL='https://script.google.com/a/macros/renato-lab.com/s/AKfycbzuDMdMDPTya5ksi7dqjBxsZI3pASMfY1FaddiomB2gK8QircclpN1uB3b15YPz93Y_sw/exec';
 const GAS_TOKEN='2026_eu_battery_regulation_v1';
+/* 每次更新 index.html 內容（題目、文案、邏輯等）時，請同步更新此日期，作為版控與內外部溝通依據 */
+const LAST_UPDATED='2026-07-02';
 
 /* ====== 6 Gate ====== */
 const STAGES=[
@@ -201,16 +209,16 @@ const STAGES_EN=[
 const I18N={
  "G0-Q01":{label:"Enter the product name or model for this assessment (used as the report title).",hint:"This field does not affect the results."},
  "G0-Q02":{label:"Does the product involve a battery, a product incorporating a battery, a battery cell or module, a stationary battery energy storage system, a used battery, or a waste battery?",hint:"Determines whether your product type falls within the scope of the EU Battery Regulation.",opts:{yes:"Yes",no:"No",unknown:"Not sure"}},
- "G0-Q03":{label:"Is the product connected to the EU market?",hint:"Determines whether your product is affected by the EU Battery Regulation — directly, or indirectly through the supply chain.",opts:{"direct EU route":"Placed on the EU market","customer data request only":"Customer requests EU compliance data","no EU relevance":"Not related to the EU",unknown:"Not sure"}},
+ "G0-Q03":{label:"Does the product have any connection to the EU market?",hint:"Determines whether your product is affected by the EU Battery Regulation — directly, or indirectly through the supply chain.",opts:{"direct EU route":"Placed on the EU market","customer data request only":"Customer requests EU compliance data","no EU relevance":"Not related to the EU",unknown:"Not sure"}},
  "G1-Q01":{label:"How is the battery supplied?",hint:"Select how this battery is supplied in this case. <b>Standalone battery</b> = a battery or battery pack sold on its own; <b>Incorporated into another product</b> = built into a laptop, phone, power tool, energy storage unit, etc. (selecting this will further confirm whether it is a stationary system); <b>Battery cell / module</b> = supplied for downstream assembly.",opts:{"Standalone batteries":"Standalone battery","Batteries incorporated into products":"Incorporated into another product (e.g. laptop, phone, power tool, energy storage)","Battery cells or battery modules made available for end use":"Battery cell / module",unknown:"Other or not sure"}},
  "G1-Q02":{label:"Is this product a “stationary” battery energy storage system (BESS)?",hint:"A stationary battery energy storage system is installed in a fixed location to store and supply electricity (e.g. residential, commercial & industrial, or grid-scale storage); portable storage devices are not included. The EU sets additional safety requirements for stationary BESS, and they are generally classified as industrial batteries.",opts:{yes:"Yes",no:"No",unknown:"Not sure"}},
  "G1-Q03":{label:"Which battery category does the product fall under?",hint:"<b>Portable battery</b>: a sealed battery weighing 5 kg or less, not designed specifically for industrial use, and not an electric vehicle, light means of transport (LMT) or starting, lighting and ignition (SLI) battery.<br><b>Light means of transport (LMT) battery</b>: a sealed battery weighing 25 kg or less, used to power micro-mobility vehicles, e-bikes, mopeds, three-wheelers and light four-wheelers (including EU category L vehicles).<br><b>Starting, lighting and ignition (SLI) battery</b>: a battery supplying power for starting, lighting or ignition, e.g. vehicle starter batteries or generator starting batteries.<br><b>Industrial battery</b>: a battery designed for industrial use, including new batteries and those prepared for repurposing or repurposed for industrial use. Any other battery over 5 kg that is not an EV, LMT or SLI battery also falls here.<br><b>Electric vehicle battery</b>: an LMT-vehicle battery weighing over 25 kg, or a battery for electric passenger cars, vans, trucks and buses.<br>A <b>stationary battery energy storage system (BESS)</b> is generally classified as an industrial battery.",opts:{"portable battery":"Portable battery","LMT battery":"Light means of transport (LMT) battery","SLI battery":"Starting, lighting and ignition (SLI) battery","industrial battery":"Industrial battery","electric vehicle battery":"Electric vehicle battery",unknown:"Not sure"}},
  "G2-Q01":{label:"Which life-cycle stage is the battery at?",hint:"<b>New battery</b>: a newly manufactured battery.<br><b>Used battery</b>: a battery that has been re-used, remanufactured or repurposed.<br><b>Waste battery</b>: any battery the holder discards, intends to discard or is required to discard, regardless of its condition (see the Waste Framework Directive, 2008/98/EC).<br><b>Waste battery fraction</b>: an output of battery recycling, such as black mass.",opts:{new:"New battery",used:"Used battery",waste:"Waste battery",fraction:"Waste battery fraction (e.g. black mass)",unknown:"Not sure"}},
  "G2-Q02":{label:"If your process involves used or waste batteries, select the type of operation.",hint:"<b>Re-use</b>: using a non-waste battery or its parts again for the same purpose it was designed for.<br><b>Repurposing</b>: using a non-waste battery or its parts for a purpose other than the one it was originally designed for.<br><b>Remanufacturing</b>: operations on a used battery under strict objective criteria — all cells and modules are disassembled and assessed, a specified share of new, used or recovered cells, modules or parts is used, capacity is restored to at least 90% of the original rated capacity, the state-of-health spread between individual cells does not exceed 3%, and the battery is returned to the same purpose it was originally designed for.<br><b>Preparation for re-use</b>: preparing a waste battery or its parts so it can be re-used without further pre-treatment.<br><b>Preparation for repurposing</b>: preparing a waste battery or its parts so it can be used for a purpose other than originally designed.<br><b>Preparation for recycling</b>: treatment of a waste battery before any recycling process, including (but not limited to) storage, handling and disassembly of battery packs, or separating fractions that are not part of the battery itself.<br><b>Sorting</b>: initial classification of collected waste batteries for transport to a treatment facility.",opts:{"reuse route":"Re-use","repurposing route":"Repurposing","remanufacturing route":"Remanufacturing","preparation for re-use":"Preparation for re-use (waste status change)","preparation for repurposing":"Preparation for repurposing (waste status change)","preparation for recycling":"Preparation for recycling (waste status change)",sorting:"Sorting",other:"Other",unknown:"Not sure"}},
- "G2-Q03":{label:"If the battery is a used or waste battery, is it expected to re-enter the market or be put into service?",hint:"Used and waste batteries returned to the market after treatment must meet the applicable waste management, quality, safety, performance, and packaging and transport requirements.",opts:{yes:"Yes",no:"No",unknown:"Not sure"}},
+ "G2-Q03":{label:"If the battery is a used or waste battery, is it expected to re-enter the market or be put into service?",hint:"Used and waste batteries returned to the market or put into service after treatment must meet the applicable waste management, quality, safety, performance, and packaging and transport requirements.",opts:{yes:"Yes",no:"No",unknown:"Not sure"}},
  "G3-Q01":{label:"Does your company (or your EU subsidiary) place products on the EU market directly, or only support customers with EU compliance data?",hint:"Determines how the EU regulates your company — directly, or indirectly through the supply chain.",opts:{"direct EU market route":"Place products on the EU market directly","support-only customer request":"Only support customers with EU compliance data","no route":"Neither",unknown:"Not sure"}},
  "G3-Q02":{label:"Is your company a supplier of battery cells or battery modules?",hint:"If your company only supports customers with EU Battery Regulation compliance data, please confirm whether your company supplies battery cells or battery modules. If so, you may still have supply-chain information, documentation and cooperation responsibilities.",opts:{yes:"Yes",no:"No",unknown:"Not sure"}},
- "G3-Q03":{label:"How does the product enter the EU market?",hint:"<b>Placing on the market</b>: the first time a battery is supplied on the EU market. A battery is placed on the market only once in its life — e.g. an EU manufacturer’s first ex-works delivery, or an importer’s first customs clearance.<br><b>Making available on the market</b>: supplying a battery for distribution or use on the EU market in the course of a commercial activity, whether for payment or free of charge. Every transfer in the EU supply chain (e.g. importer to distributor, distributor to retailer) meets this definition.<br><b>Putting into service</b>: a battery entering use in the EU without being placed on the market. This mainly closes loopholes where operators avoid the first two definitions, including batteries produced or imported for own use.",opts:{"placing on the market":"Placing on the market","making available on the market":"Making available on the market","putting into service":"Putting into service","none of these":"None of these",unknown:"Not sure"}},
+ "G3-Q03":{label:"How does the product enter the EU market?",hint:"<b>Placing on the market</b>: the first making available of a battery on the Union market. A battery is placed on the market only once in its life — e.g. an EU manufacturer’s first ex-works delivery, or an importer’s first customs clearance.<br><b>Making available on the market</b>: supplying a battery for distribution or use on the EU market in the course of a commercial activity, whether for payment or free of charge. Every transfer in the EU supply chain (e.g. importer to distributor, distributor to retailer) meets this definition.<br><b>Putting into service</b>: means the first use, for its intended purpose, in the Union, of a battery, without having been previously placed on the market. This mainly closes loopholes where operators avoid the first two definitions, including batteries produced or imported for own use.",opts:{"placing on the market":"Placing on the market","making available on the market":"Making available on the market","putting into service":"Putting into service","none of these":"None of these",unknown:"Not sure"}},
  "G4-Q01":{label:"Is the industrial battery rechargeable?",hint:"The EU sets different carbon footprint and performance & durability requirements depending on whether an industrial battery is rechargeable.",opts:{rechargeable:"Rechargeable","non-rechargeable":"Non-rechargeable",unknown:"Not sure"}},
  "G4-Q02":{label:"Does the industrial battery have a capacity greater than 2 kWh?",hint:"The EU sets different carbon footprint, recycled content, battery passport applicability and performance & durability requirements depending on whether an industrial battery exceeds 2 kWh.",opts:{"capacity greater than 2 kWh":"Greater than 2 kWh","capacity not greater than 2 kWh":"2 kWh or less",unknown:"Not sure"}},
  "G4-Q03":{label:"Does the industrial battery rely on external storage (e.g. a flow battery)?",hint:"For industrial batteries with exclusively external storage (e.g. flow batteries), the EU grants partial exemptions on carbon footprint, recycled content, and performance & durability.",opts:{"with exclusively external storage":"Yes","without exclusively external storage":"No",unknown:"Not sure"}},
@@ -245,10 +253,11 @@ function optHTML(q){
   }).join("")+'</div>';
 }
 function toggleHint(btn){ var el=btn.previousElementSibling; var open=el.classList.toggle('open'); btn.textContent=open?L('收合 ▴','Show less ▴'):L('看更多 ▾','Show more ▾'); }
-function qHTML(q){
+function qHTML(q,n){
   var multi=q.type==="multi"?'<span class="multi-tag">'+L('可複選','Multiple choice')+'</span>':"";
   var hintBlock = '<div class="q-hint hint-clamp">'+qH(q)+'</div><span class="hint-toggle" onclick="toggleHint(this)" style="display:none">'+L('看更多 ▾','Show more ▾')+'</span>';
-  return '<div class="q"><div class="q-label">'+qL(q)+multi+'</div>'+hintBlock+optHTML(q)+'</div>';
+  var num=n?'<span class="qnum">'+n+'. </span>':'';
+  return '<div class="q"><div class="q-label">'+num+qL(q)+multi+'</div>'+hintBlock+optHTML(q)+'</div>';
 }
 /* 只有實際超過 3 行（內容被截斷）時才顯示「看更多」；剛好或未足 3 行則隱藏 */
 function applyHintToggles(){
@@ -277,8 +286,8 @@ function restart(){ S.a={};S.idx=0;S.skipped=new Set();S.ended=null;S.hist=[];S.
 
 function progressHTML(){
   var bar='<div class="progress">'+STAGES.map(function(st,i){
-    var cls,label=stN(i);
-    if(!stageApplicable(i)){cls="skipped";label=stN(i)+L("·略過"," · skip");}
+    var cls,label=(i+1)+'. '+stN(i);
+    if(!stageApplicable(i)){cls="skipped";label=(i+1)+'. '+stN(i)+L("·略過"," · skip");}
     else if(i===S.idx&&!S.ended)cls="current";
     else if(stageComplete(i))cls="done"; else cls="upcoming";
     return '<div class="pstep '+cls+'" onclick="jumpTo('+i+')"><div class="pbar"></div>'+label+'</div>';
@@ -291,7 +300,7 @@ function collectApplicable(){ var m={}; QS.forEach(function(q){ m[q.id]=!!q.when
 /* 供應形式選項皆為合法 fact，直接送後台即可 */
 function buildAnswers(){ var o={}; Object.keys(S.a).forEach(function(k){ o[k]=S.a[k]; }); return o; }
 function finish(){
-  document.getElementById('app').innerHTML=progressHTML()+'<div class="card"><div class="end"><div class="icon">⏳</div><h2>'+L('計算中…','Calculating…')+'</h2><p>'+L('正在送出作答並比對 Legal Theme，請稍候。','Submitting your answers and matching them against the Legal Themes, please wait.')+'</p></div></div>';
+  document.getElementById('app').innerHTML=progressHTML()+'<div class="card"><div class="end"><div class="icon">⏳</div><h2>'+L('計算中…','Calculating…')+'</h2><p>'+L('正在送出作答並比對各項義務，請稍候。','Submitting your answers and matching them against the applicable obligations, please wait.')+'</p></div></div>';
   window.scrollTo(0,0);
   fetch(GAS_URL,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},
     body:JSON.stringify({token:GAS_TOKEN,lang:S.lang,caseName:S.a['G0-Q01']||'',answers:buildAnswers(),applicable:collectApplicable()})})
@@ -312,11 +321,7 @@ function realEmail(){
 function srvCard(o,zone){
   var trigs=(o.triggers||[]).join('、');
   var ec=zone==='confirmed'?'why2':(zone==='needs'?'note2':'note3');
-  var body;
-  if(o.explanation){ body='<div class="'+ec+'">'+o.explanation+'</div>'; }
-  else if(zone==='confirmed'){ body='<div class="why2">'+L('為何命中：','Why it applies: ')+((o.why||[]).join('；')||'—')+'</div>'; }
-  else if(zone==='needs'){ body='<div class="note2">'+L('補充以下次要資料可更準確：','Providing the following secondary data improves accuracy: ')+((o.refine||[]).join('、')||'—')+'</div>'; }
-  else { body='<div class="note3">'+L('缺少判斷依據：','Missing information to decide: ')+((o.missing||[]).join('、')||'—')+'</div>'; }
+  var body=o.explanation?('<div class="'+ec+'">'+o.explanation+'</div>'):'';
   var action=(zone==='confirmed'&&o.action)?'<div class="lt-act"><b>'+L('要採取的行動：','Action to take: ')+'</b>'+o.action+'</div>':'';
   var notes=o.notes?'<div class="lt-note">'+L('附註：','Note: ')+o.notes+'</div>':'';
   return '<div class="lt '+zone+'"><div class="lt-h"><b>'+o.id+'</b> '+o.name+'</div>'+
@@ -324,6 +329,16 @@ function srvCard(o,zone){
    body+action+notes+
    (trigs?'<div class="lt-trig">'+L('依據 trigger：','Based on triggers: ')+trigs+'</div>':'')+'</div>';
 }
+const REPORT_INTRO_ZH=['感謝您的填答。',
+ '歐盟《電池與廢電池法規》（Regulation (EU) 2023/1542）全文共有 96 條，並涵蓋多個附錄。法規內容不只涉及電池製造商、進口商、經銷商、供應商與生產者，也同時規範會員國、歐盟執委會、主管機關、符合性評估機構、生產者責任組織等不同角色的義務與程序。',
+ '為了協助企業快速掌握與自身營運與產品的合規風險，REnato lab 將法規中與 ICT 業者較相關的條文，整理為 17 個法規主題（Legal Themes），例如「碳足跡」、「再生含量」、「標示、QR、符合性與 CE」、「電池護照」及「EPR 與廢電池管理」等，方便您快速理解《電池與廢電池法規》中與公司最相關的面向。',
+ '以下結果將依據您的填答進行初步判斷，協助您辨識可能需要優先關注的法規主題、對應條文與責任方向。您可以先閱讀各主題的簡要說明，並視需要進一步釐清適用情境、資料證據與後續準備工作。',
+ '若您希望進一步確認產品是否適用特定要求，或需要建立更完整的法規判讀與證據準備路徑，歡迎聯絡 REnato lab 展開後續諮詢。'];
+const REPORT_INTRO_EN=['Thank you for completing the assessment.',
+ 'Regulation (EU) 2023/1542 (the EU Batteries and Waste Batteries Regulation) has 96 articles in total and covers multiple annexes. It covers not only battery manufacturers, importers, distributors, suppliers and producers, but also equally governs the obligations and procedures of Member States, the European Commission, competent authorities, conformity assessment bodies, producer responsibility organisations and other roles.',
+ 'To help companies quickly grasp the compliance risks relevant to their own operations and products, REnato lab has organised the articles most relevant to ICT operators into 17 Legal Themes — such as "Carbon Footprint", "Recycled Content", "Labelling, QR, Conformity & CE", "Battery Passport" and "EPR & waste-battery management" — to help you quickly understand the aspects of the Regulation most relevant to your company.',
+ 'The results below are a preliminary assessment based on your answers, to help you identify the Legal Themes, corresponding articles and responsibility directions that may deserve priority attention. You can start by reading the brief description of each theme and, as needed, further clarify the applicable scenarios, data evidence and follow-up preparation.',
+ 'If you would like to further confirm whether your product is subject to specific requirements, or to build a more complete legal-interpretation and evidence-preparation path, please contact REnato lab to begin follow-up consulting.'];
 function endHTML(){
   if(S.ended==="out") return '<div class="card"><div class="end"><div class="icon">✓</div>'+
     '<h2>'+L('不在歐盟電池法範圍','Outside the scope of the EU Battery Regulation')+'</h2><p>'+L('依你的回答，本案例與電池法無關，不需要進一步診斷。','Based on your answers, this case is not related to the Battery Regulation, so no further assessment is needed.')+'</p>'+
@@ -341,9 +356,15 @@ function endHTML(){
     '<div class="privacy2">'+L('為寄送結果並保留紀錄，我們會儲存你的作答內容、系統算出的判斷結果與此 email，存放於受存取控制的雲端試算表，<b>保留 12 個月後自動刪除</b>；你可隨時來信要求提前刪除。本工具僅供初步自評，不構成法律意見。','To send your results and keep a record, we store your answers, the calculated results and this email address in an access-controlled cloud spreadsheet. <b>Data is deleted automatically after 12 months</b>; you can request earlier deletion by email at any time. This tool provides a preliminary self-assessment only and does not constitute legal advice.')+'</div>'+
     '<button class="btn btn-primary" onclick="realEmail()">'+L('寄送結果備份','Send a copy')+'</button></div>';
   var n=(R.confirmed||[]).length,m=(R.needsMoreData||[]).length,k=(R.cannotDetermine||[]).length;
+  var caseName=S.a['G0-Q01']||L('未命名','Untitled');
+  var todayStr=new Date().toISOString().slice(0,10);
+  var caseLine='<div class="case-line">'+L('案例：','Case: ')+caseName+L('　·　產出日期：',' · Generated: ')+todayStr+'</div>';
+  var introBlock='<div class="intro2">'+(S.lang==='en'?REPORT_INTRO_EN:REPORT_INTRO_ZH).map(function(t){return '<p>'+t+'</p>';}).join('')+'</div>';
   return '<div class="card"><div class="end" style="padding-bottom:6px"><div class="icon">📋</div>'+
-    '<h2>'+L('初步合規診斷結果','Preliminary compliance results')+'</h2><div class="rpills" style="justify-content:center;margin-bottom:14px"><span class="rp rp1">'+L('確定適用 ','Confirmed ')+n+'</span><span class="rp rp2">'+L('建議補充 ','More data ')+m+'</span><span class="rp rp3">'+L('尚難判斷 ','Undetermined ')+k+'</span></div>'+
-    '<p>'+L('以下為依你的作答比對 Legal Theme 的結果。','Below are the results of matching your answers against the Legal Themes.')+'</p></div>'+body+'</div>'+emailHtml+
+    '<h2>'+L('初步合規診斷結果','Preliminary compliance results')+'</h2>'+
+    caseLine+introBlock+
+    '<div class="rpills" style="justify-content:center;margin-bottom:14px"><span class="rp rp1">'+L('確定適用 ','Confirmed ')+n+'</span><span class="rp rp2">'+L('建議補充 ','More data ')+m+'</span><span class="rp rp3">'+L('尚難判斷 ','Undetermined ')+k+'</span></div>'+
+    '<p class="basis2">'+L('以下結果依你的作答，比對 Regulation (EU) 2023/1542 的各項義務（Legal Theme），分為「確定適用／建議補充資料／無法判斷」三類。','These results match your answers against the obligations (Legal Themes) of Regulation (EU) 2023/1542, grouped into “Confirmed applicable / More data recommended / Cannot determine”.')+'</p></div>'+body+'</div>'+emailHtml+
     '<div class="actions" style="margin-top:4px"><button class="btn btn-ghost" onclick="restart()">'+L('↺ 再診斷另一顆電池','↺ Assess another battery')+'</button></div>';
 }
 
@@ -355,18 +376,21 @@ function landingHTML(){
   '<p class="lsub">'+L('10 分鐘，看清貴公司在 EU 2023/1542 下的義務範圍與下一步。','In 10 minutes, see your obligations under EU 2023/1542 and what to do next.')+'</p>'+
   '</div>'+
   '<div class="lcard">'+
-   '<p>'+L('歐盟電池法橫跨碳足跡、再生料、電池護照到生產者責任，條文繁多、彼此牽動。我們把法規拆解成一套分階段診斷，帶貴公司從產品出發，逐步釐清哪些義務真正適用——讓第一步不必逐條翻法條。','The EU Battery Regulation spans carbon footprint, recycled content, the battery passport and producer responsibility — many interlinked articles. We break it into a staged assessment that starts from your product and works out which obligations actually apply, so your first step is not reading the law article by article.')+'</p>'+
-   '<p><span class="lk">'+L('工具範圍：','Scope: ')+'</span>'+L('本次工具聚焦歐盟電池法下，ICT 業者可能涉及的產品、供應鏈與市場責任。回收處理業者相關責任、第三方驗證單位、主管機關或會員國的執行程序，則未納入工具判斷範圍。','This tool focuses on the product, supply-chain and market responsibilities that ICT operators may be subject to under the EU Battery Regulation. The responsibilities of recycling and waste-treatment operators, third-party verification bodies, and the enforcement procedures of competent authorities or Member States are not included in the tool\'s assessment scope.')+'</p>'+
-   '<p><span class="lk">'+L('適用對象：','Who it is for: ')+'</span>'+L('在歐盟銷售電池、或銷售含電池產品的企業；特別適合電子與資通訊產品（筆電、手機、網通設備、IoT 裝置）及電芯／模組／零組件供應商。回答約 10–20 題（依產品情況自動調整），系統即時比對歐盟電池法的各項義務，產出下列三層結果，作為內部評估與後續諮詢的起點：','companies selling batteries, or products containing batteries, in the EU — especially electronics and ICT products (laptops, phones, networking gear, IoT devices) and cell / module / component suppliers. Answer about 10–20 questions (adjusted automatically to your product) and the tool matches them against the EU Battery Regulation in real time, producing the three-tier result below as a starting point for internal review and follow-up consulting:')+'</p>'+
+   '<p>'+L('歐盟電池法橫跨碳足跡、再生料、電池護照到生產者責任，條文繁多、彼此牽動。我們把法規拆解成一套分階段診斷，帶貴公司從產品出發，逐步釐清哪些義務真正適用——讓第一步不必逐條翻法條。','The EU Battery Regulation spans carbon footprint, recycled content, the battery passport and extended producer responsibility — many interlinked articles. We break it into a staged assessment that starts from your product and works out which obligations actually apply, so your first step is not reading the law article by article.')+'</p>'+
+   '<p><span class="lk">'+L('使用範圍：','Scope of use: ')+'</span>'+L('本次工具聚焦歐盟電池法下，ICT 業者可能涉及的產品、供應鏈與市場責任。回收處理業者相關責任、第三方驗證單位、主管機關或會員國的執行程序，則未納入工具判斷範圍。','This tool focuses on the product, supply-chain and market responsibilities that ICT operators may be subject to under the EU Battery Regulation. The responsibilities of recycling and waste-treatment operators, third-party verification bodies, and the enforcement procedures of competent authorities or Member States are not included in the tool\'s assessment scope.')+'</p>'+
+   '<p><span class="lk">'+L('適用對象：','Who it is for: ')+'</span>'+L('在歐盟銷售電池、或銷售含電池產品的企業；特別適合電子與資通訊產品（筆電、手機、網通設備、IoT 裝置）及電芯／模組／零組件供應商。','companies selling batteries, or products incorporating batteries, on the EU market — especially electronics and ICT products (laptops, phones, networking gear, IoT devices) and cell / module / component suppliers.')+'</p>'+
+   '<p>'+L('回答約 10–20 題（依產品情況自動調整），系統即時比對歐盟電池法的各項義務，產出下列三層結果，作為內部評估與後續諮詢的起點：','Answer about 10–20 questions (adjusted automatically to your product) and the tool matches them against the EU Battery Regulation in real time, producing the three-tier result below as a starting point for internal review and follow-up consulting:')+'</p>'+
    '<div class="rpills"><span class="rp rp1">'+L('確定適用','Confirmed applicable')+'</span><span class="rp rp2">'+L('建議補充','More data recommended')+'</span><span class="rp rp3">'+L('尚難判斷','Undetermined')+'</span></div>'+
    '<p class="ltrust">🔒 '+L('送出問卷後，系統會儲存貴公司的作答與診斷結果，用於產出報告與內部紀錄；email 為選填，僅供寄送報告備份。資料保留 12 個月，可隨時來信要求刪除。','After you submit, the tool stores your answers and results to generate the report and keep an internal record; email is optional and only used to send a copy of the report. Data is kept for 12 months and can be deleted on request.')+'</p>'+
    '<p class="ldisc">'+L('本工具由 <b>REnato lab</b> 研究開發，法律依據為 Regulation (EU) 2023/1542；僅提供初步自評，不構成法律意見，實際義務以最新法規與授權法規為準。聯絡：','This tool is developed by <b>REnato lab</b>, based on Regulation (EU) 2023/1542. It provides a preliminary self-assessment only and does not constitute legal advice; actual obligations depend on the latest regulation and delegated acts. Contact: ')+'<a href="mailto:info@renato-lab.com">info@renato-lab.com</a></p>'+
+   '<p class="lastupd">'+L('最後更新：','Last updated: ')+LAST_UPDATED+'</p>'+
   '</div>'+
   '<button class="btn btn-primary lbtn2" style="display:block;margin:0 auto;padding:13px 30px" onclick="startTool()">'+L('開始診斷 →','Start →')+'</button></div>';
 }
 function startTool(){ S.started=true; S.showAbout=false; render(); window.scrollTo(0,0); }
 function showAbout(){ S.showAbout=true; render(); window.scrollTo(0,0); }
 function hideAbout(){ S.showAbout=false; render(); window.scrollTo(0,0); }
+function goHome(){ S.showAbout=false; S.started=false; S.ended=null; render(); window.scrollTo(0,0); }
 
 /* ====== 關於問卷頁 ====== */
 const ABOUT_ZH=['歐盟《電池與廢電池法規》（Regulation (EU) 2023/1542）全文共有 96 條，並涵蓋多個附錄。法規內容不只涉及電池製造商、進口商、經銷商、供應商與生產者，也同時規範會員國、歐盟執委會、主管機關、符合性評估機構、生產者責任組織等不同角色的義務與程序。',
@@ -402,7 +426,7 @@ function render(){
   if(!S.started){ app.innerHTML=landingHTML(); window.scrollTo(0,0); return; }
   if(S.ended){ app.innerHTML=progressHTML()+endHTML(); window.scrollTo(0,0); return; }
   var qs=stageQs(S.idx);
-  var bodyq=qs.length?qs.map(qHTML).join(""):'<div class="q-hint" style="padding:10px 0">'+L('此階段依目前作答不適用。請點上方其他階段，或先補答前面的題目。','This stage does not apply based on your current answers. Tap another stage above, or complete the earlier questions first.')+'</div>';
+  var bodyq=qs.length?qs.map(function(q,i){return qHTML(q,i+1);}).join(""):'<div class="q-hint" style="padding:10px 0">'+L('此階段依目前作答不適用。請點上方其他階段，或先補答前面的題目。','This stage does not apply based on your current answers. Tap another stage above, or complete the earlier questions first.')+'</div>';
   var nextLabel=S.idx===5?L("完成診斷 →","Finish →"):L("下一步 →","Next →");
   var stagehd=L('階段 ','Stage ')+(S.idx+1)+L('／6 · ',' / 6 · ')+stN(S.idx);
   var stagesub=S.lang==='en'?(stSub(S.idx)+' | '+qs.length+(qs.length===1?' question':' questions')):(stSub(S.idx)+'　|　本階段 '+qs.length+' 題');
